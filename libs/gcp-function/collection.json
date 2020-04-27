@@ -1,0 +1,12 @@
+{
+  "$schema": "../../node_modules/@angular-devkit/schematics/collection-schema.json",
+  "name": "gcp-function",
+  "version": "0.0.1",
+  "schematics": {
+    "gcpFunction": {
+      "factory": "./src/schematics/gcp-function/schematic",
+      "schema": "./src/schematics/gcp-function/schema.json",
+      "description": "gcp-function schematic"
+    }
+  }
+}

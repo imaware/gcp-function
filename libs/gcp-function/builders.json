@@ -1,0 +1,10 @@
+{
+  "$schema": "../../node_modules/@angular-devkit/architect/src/builders-schema.json",
+  "builders": {
+    "build": {
+      "implementation": "./src/builders/gcp-function/builder",
+      "schema": "./src/builders/gcp-function/schema.json",
+      "description": "gcp-function builder"
+    }
+  }
+}

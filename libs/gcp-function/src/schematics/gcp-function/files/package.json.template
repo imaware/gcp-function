@@ -1,0 +1,12 @@
+{
+  "name": "@<%= prefix %>/<%= name %>",
+  "version": "0.0.1",
+  "main": "src/index.js",
+  "private": true,
+  "scripts": {
+    "test": "jest ./src/index.spec.ts",
+    "serve": "npx @google-cloud/functions-framework --target <%= propertyName %> --source ../../dist/apps/<%= name %>",
+    "post": "curl localhost:8080?value=Hello",
+    "deploy": "gcloud functions deploy <%= propertyName %> --trigger-http --runtime nodejs10 --region us-central1"
+  }
+}

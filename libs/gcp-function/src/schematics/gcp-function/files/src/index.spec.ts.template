@@ -1,0 +1,19 @@
+import { <%= propertyName %> } from "./index";
+
+describe("<%= name %>", () => {
+  it("return the input value", async () => {
+    // Mock ExpressJS 'req' and 'res' parameters
+    const req = {
+      query: { value: 'Hello' },
+      body: {}
+    };
+    const res = { send: jest.fn((x) => x) };
+
+    // Call <%= propertyName %> function
+    const testResult = await <%= propertyName %>(req, res);
+    const { calls } = res.send.mock;
+
+    expect(testResult).toBe('Hello World');
+    expect(calls[0][0]).toBe('Hello World');
+  });
+});

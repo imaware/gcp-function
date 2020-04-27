@@ -1,1 +1,11 @@
-const variable = "<%= projectName %>";
+import { myLib } from "@proj/my-lib";
+import moment = require("moment");
+
+export const <%= propertyName %> = async (req: any, res: any) => {
+  const value = req.query.value || 10;
+  return res.send({
+    value,
+    moment: moment().format('LLLL'),
+    myLib: myLib()
+  });
+};

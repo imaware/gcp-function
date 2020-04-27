@@ -1,0 +1,14 @@
+import * as Supertest from "supertest";
+const supertest = Supertest("http://localhost:8080");
+
+describe("<%= name %> e2d", () => {
+  it("return Hello World", async () => {
+    await supertest
+      .post("?value=Hello")
+      .expect(200)
+      .expect((response) => {
+        // console.log(response.text);
+        expect(response.text).toBe("Hello World");
+      });
+  });
+});

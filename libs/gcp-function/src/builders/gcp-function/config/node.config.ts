@@ -39,18 +39,9 @@ function getNodePartial(options: Options) {
     ];
   }
 
-  // fixme: How to organise this
-  console.log(options);
-  // add plugins
   webpackConfig.plugins = [
     new CleanWebpackPlugin(),
-    new CopyPlugin([
-      // fixme:
-      {
-        from: options.yamlConfig,
-        to: options.outputPath
-      },
-    ]),
+    new CopyPlugin([{from: options.yamlConfig, to: options.outputPath}]),
   ];
 
   return webpackConfig;

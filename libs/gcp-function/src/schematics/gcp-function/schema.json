@@ -34,6 +34,13 @@
       "minLength": 1,
       "x-prompt": "What runtime would you like to use?"
     },
+    "maxInstances": {
+      "description": "Maximum instance of cloud functions",
+      "default": 10,
+      "type": "number",
+      "minLength": 1,
+      "x-prompt": "What is the maximum number of instance?"
+    },
     "region": {
       "description": "Cloud Function region",
       "default": "us-central1",

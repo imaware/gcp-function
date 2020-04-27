@@ -105,9 +105,11 @@ class WorkspaceConfiguration {
     main: string
     name?: string
     version?: string
+    private: true
     dependencies?: { [key: string]: string }
   } = {
-    "main": "./main.js"
+    main: "./main.js",
+    private: true,
   };
   tsConfig: any = {
     "lib": ["es2017"],

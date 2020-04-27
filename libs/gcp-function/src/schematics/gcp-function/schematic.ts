@@ -47,7 +47,7 @@ function getBuildConfig(project: any, options: Options) {
       main: join(project.sourceRoot, "index.ts"),
       yamlConfig: join(project.sourceRoot, "/environments/.production.yaml"),
       tsConfig: join(options.appProjectRoot, "tsconfig.app.json"),
-      packageJson: join(options.appProjectRoot, "package.json")
+      packageJson: join(options.appProjectRoot, "package.json"),
     },
     configurations: {
       production: {
@@ -76,7 +76,20 @@ function getDeployConfig(options: Options) {
     options: {
       commands: [
         {
-          command: `gcloud functions deploy ${options.propertyName} ${options.trigger} --runtime ${options.runtime} --region ${options.region} --env-vars-file ./dist/apps/${options.name}/.production.yaml --source ./dist/apps/${options.name}`
+          command: `gcloud functions deploy ${options.propertyName} ${options.trigger} --runtime ${options.runtime} --region ${options.region} --env-vars-file ./dist/apps/${options.name}/.production.yaml --source ./dist/apps/${options.name} --max-instances ${options.maxInstances}`
+        }
+      ]
+    }
+  };
+}
+
+function getLogConfig(options: Options) {
+  return {
+    builder: "@nrwl/workspace:run-commands",
+    options: {
+      commands: [
+        {
+          command: `gcloud functions logs read ${options.propertyName}`
         }
       ]
     }
@@ -96,8 +109,10 @@ function updateWorkspaceJson(options: Options): Rule {
 
     project.architect.build = getBuildConfig(project, options);
     project.architect.serve = getServeConfig(options);
+    project.architect.logs = getLogConfig(options);
     project.architect.deploy = getDeployConfig(options);
     // fixme: test don't show in architecture
+
     project.architect.test = externalSchematic("@nrwl/jest", "jest-project", {
       project: options.name,
       setupFile: "none",

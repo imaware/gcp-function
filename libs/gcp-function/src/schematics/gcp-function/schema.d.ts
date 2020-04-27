@@ -5,6 +5,7 @@ export interface UserOptions {
   name: string;
   prefix?: string;
   trigger?: string;
+  maxInstances?: number;
   runtime?: string;
   region?: string;
   tags?: string;

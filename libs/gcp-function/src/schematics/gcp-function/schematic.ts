@@ -30,15 +30,6 @@ import {inspect} from "util";
 import {Options, UserOptions} from "./schema";
 import {join, normalize} from "@angular-devkit/core";
 
-
-function updateDependencies(options: Options): Rule {
-  return updateJsonInTree("package.json", json => {
-    delete json.dependencies["@nrwl/node"];
-    json.devDependencies["@nrwl/node"] = options.nxVersion;
-    return json;
-  });
-}
-
 function getBuildConfig(project: any, options: Options) {
   return {
     builder: "@joelcode/gcp-function:build",
@@ -107,8 +98,8 @@ function updateWorkspaceJson(options: Options): Rule {
       architect: <any>{}
     };
 
-    project.architect.build = getBuildConfig(project, options);
     project.architect.serve = getServeConfig(options);
+    project.architect.build = getBuildConfig(project, options);
     project.architect.logs = getLogConfig(options);
     project.architect.deploy = getDeployConfig(options);
     // fixme: test don't show in architecture
@@ -164,6 +155,7 @@ function generateFiles(options: Options): Rule {
 }
 
 /* Utilities */
+// noinspection JSUnusedGlobalSymbols
 export default function (UserOptions: UserOptions): Rule {
   const options = normalizeOptions(UserOptions);
 
@@ -172,9 +164,7 @@ export default function (UserOptions: UserOptions): Rule {
     context.logger.info(inspect(options, false, null));
 
     return chain([
-      // setDefaultCollection('@nrwl/node'), // fixme: set your plugin name
       addPackageWithInit("@nrwl/jest"),
-      // updateDependencies(options, packageName), // fixme: set your plugin name
       formatFiles(options),
       generateFiles(options),
       updateNxJson(options),

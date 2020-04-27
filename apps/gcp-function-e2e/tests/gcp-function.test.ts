@@ -9,19 +9,19 @@ import {
 describe("gcp-function e2e", () => {
   it("should create gcp-function", async done => {
     const plugin = "my-app";
-    const lib = "my-lib";
-    const lib2 = "my-lib2";
+    // const lib = "my-lib";
+    // const lib2 = "my-lib2";
     ensureNxProject("@joelcode/gcp-function", "dist/libs/gcp-function");
 
     await Promise.all([
-      await runNxCommandAsync(`generate @nrwl/node:lib ${lib}  --buildable`),
-      await runNxCommandAsync(`generate @nrwl/node:lib ${lib2}  --buildable`),
+      // await runNxCommandAsync(`generate @nrwl/node:lib ${lib}  --buildable`),
+      // await runNxCommandAsync(`generate @nrwl/node:lib ${lib2}  --buildable`),
       await runNxCommandAsync(`generate @joelcode/gcp-function:http ${plugin}`)
     ]);
 
     await Promise.all([
-      await runNxCommandAsync(`build ${lib}`),
-      await runNxCommandAsync(`build ${lib2}`)
+      // await runNxCommandAsync(`build ${lib}`),
+      // await runNxCommandAsync(`build ${lib2}`)
     ]);
 
     await runNxCommandAsync(`build ${plugin}`);

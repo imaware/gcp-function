@@ -1,11 +1,4 @@
-import { myLib } from "@proj/my-lib";
-import moment = require("moment");
-
 export const <%= propertyName %> = async (req: any, res: any) => {
-  const value = req.query.value || 10;
-  return res.send({
-    value,
-    moment: moment().format('LLLL'),
-    myLib: myLib()
-  });
+  const value = req.query.value || 'Hello World';
+  return res.send(value);
 };

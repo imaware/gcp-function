@@ -4,7 +4,7 @@ describe("<%= name %>", () => {
   it("return the input value", async () => {
     // Mock ExpressJS 'req' and 'res' parameters
     const req = {
-      query: { value: 'Hello' },
+      query: { value: 'Hello World' },
       body: {}
     };
     const res = { send: jest.fn((x) => x) };

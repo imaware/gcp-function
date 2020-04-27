@@ -45,6 +45,7 @@ function getBuildConfig(project: any, options: Options) {
     options: {
       outputPath: join(normalize("dist"), options.appProjectRoot),
       main: join(project.sourceRoot, "index.ts"),
+      yamlConfig: join(project.sourceRoot, "/environments/.production.yaml"),
       tsConfig: join(options.appProjectRoot, "tsconfig.app.json"),
       packageJson: join(options.appProjectRoot, "package.json")
     },

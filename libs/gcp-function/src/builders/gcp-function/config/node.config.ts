@@ -2,6 +2,8 @@ import {Configuration, BannerPlugin} from "webpack";
 import * as mergeWebpack from "webpack-merge";
 import * as nodeExternals from "webpack-node-externals";
 
+const CopyPlugin = require('copy-webpack-plugin');
+
 const {CleanWebpackPlugin} = require("clean-webpack-plugin");
 import {Options} from "../schema";
 import {getBaseWebpackPartial} from "./config";
@@ -37,9 +39,18 @@ function getNodePartial(options: Options) {
     ];
   }
 
+  // fixme: How to organise this
+  console.log(options);
   // add plugins
   webpackConfig.plugins = [
     new CleanWebpackPlugin(),
+    new CopyPlugin([
+      // fixme:
+      {
+        from: options.yamlConfig,
+        to: options.outputPath
+      },
+    ]),
   ];
 
   return webpackConfig;

@@ -21,6 +21,7 @@ export interface SourceMapOptions {
 export interface BuildBuilderOptions extends JsonObject {
   main: string;
   outputPath: string;
+  yamlConfig: string;
   tsConfig: string;
   packageJson: string
   watch?: boolean;

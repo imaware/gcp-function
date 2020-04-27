@@ -1,7 +1,7 @@
-import { Path, normalize } from "@angular-devkit/core";
-import { resolve, dirname, relative, basename } from "path";
-import { BuildBuilderOptions } from "../schema";
-import { statSync } from "fs";
+import {Path, normalize} from "@angular-devkit/core";
+import {resolve, dirname, relative, basename} from "path";
+import {BuildBuilderOptions} from "../schema";
+import {statSync} from "fs";
 
 export interface FileReplacement {
   replace: string;
@@ -13,6 +13,8 @@ export function normalizeBuildOptions<T extends BuildBuilderOptions>(
   root: string,
   sourceRoot: string
 ): T {
+  const outputPath = resolve(root, options.outputPath);
+  const projectSourceRoot = resolve(root, sourceRoot);
   return {
     ...options,
     root: root,
@@ -20,6 +22,7 @@ export function normalizeBuildOptions<T extends BuildBuilderOptions>(
     main: resolve(root, options.main),
     outputPath: resolve(root, options.outputPath),
     tsConfig: resolve(root, options.tsConfig),
+    yamlOutput: resolve(outputPath, '.production.yaml'),
     packageJson: resolve(root, options.packageJson),
     fileReplacements: normalizeFileReplacements(root, options.fileReplacements),
     assets: normalizeAssets(options.assets, root, sourceRoot),

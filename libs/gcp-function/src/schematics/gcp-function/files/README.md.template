@@ -3,14 +3,16 @@
 This Google Cloud Function was generated with [Nx](https://nx.dev).
 
 ## Commands
-* `nx init <%= propertyName %>`
-* `nx test <%= propertyName %>`
-* `nx format <%= propertyName %>`
-* `nx lint <%= propertyName %>`
-* `nx serve <%= propertyName %>`
-* `nx build <%= propertyName %>`
-* `nx deploy <%= propertyName %>`
-* `nx logs <%= propertyName %>`
+* `nx init <%= name %>`
+* `nx test <%= name %>`
+* `nx format <%= name %>`
+* `nx lint <%= name %>`
+* `nx serve <%= name %>`
+* `nx build <%= name %>`
+* `nx deploy <%= name %>`
+* `nx logs <%= name %>`
+* `nx format:write  <%= name %>`
+* `nx format:check  <%= name %>`
 * `gcloud functions deploy <%= propertyName %> --set-env-vars <foo=bar, zoo=lop>`
 * `gcloud functions <%= propertyName %> --update-env-vars <foo=bar, zoo=lop>`
 * `gcloud functions deploy <%= propertyName %> --service-account <email of service account>`

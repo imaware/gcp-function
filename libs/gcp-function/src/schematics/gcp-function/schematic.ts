@@ -87,18 +87,6 @@ function getLogConfig(options: Options) {
   };
 }
 
-function getFormatConfig(options: Options) {
-  return {
-    builder: "@nrwl/workspace:run-commands",
-    options: {
-      commands: [
-        {
-          command: `nx format:write ${options.name}`
-        }
-      ]
-    }
-  };
-}
 
 function getInitConfig(options: Options) {
   return {
@@ -152,7 +140,6 @@ function updateWorkspaceJson(options: Options): Rule {
     project.architect.logs = getLogConfig(options);
     project.architect.deploy = getDeployConfig(options);
     project.architect.test = getTestConfig(options);
-    project.architect.format = getFormatConfig(options);
     project.architect.init = getInitConfig(options);
 
     // project.architect.test = externalSchematic("@nrwl/jest", "jest-project", {

@@ -5,7 +5,6 @@ This Google Cloud Function was generated with [Nx](https://nx.dev).
 ## Commands
 * `nx init <%= name %>`
 * `nx test <%= name %>`
-* `nx format <%= name %>`
 * `nx lint <%= name %>`
 * `nx serve <%= name %>`
 * `nx build <%= name %>`

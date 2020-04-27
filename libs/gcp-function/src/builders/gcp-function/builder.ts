@@ -1,20 +1,20 @@
 const fs = require("fs");
-import { writeToFile, fileExists, readJsonFile, writeJsonFile } from "@nrwl/workspace/src/utils/fileutils";
-import { join, resolve } from "path";
+import {writeToFile, fileExists, readJsonFile, writeJsonFile} from "@nrwl/workspace/src/utils/fileutils";
+import {join, resolve} from "path";
 
-import { Options } from "./schema";
-import { BuilderContext, createBuilder } from "@angular-devkit/architect";
-import { JsonObject, workspaces } from "@angular-devkit/core";
-import { BuildResult, runWebpack } from "@angular-devkit/build-webpack";
-import { from, Observable } from "rxjs";
-import { concatMap, map } from "rxjs/operators";
-import { getNodeWebpackConfig } from "./config/node.config";
-import { OUT_FILENAME } from "./config/config";
-import { normalizeBuildOptions } from "./config/normalize";
-import { NodeJsSyncHost } from "@angular-devkit/core/node";
-import { createProjectGraph } from "@nrwl/workspace/src/core/project-graph";
-import { createTmpTsConfig } from "@nrwl/workspace/src/utils/buildable-libs-utils";
-import { calculateProjectDependencies } from "./config/buildable-libs-utils";
+import {Options} from "./schema";
+import {BuilderContext, createBuilder} from "@angular-devkit/architect";
+import {JsonObject, workspaces} from "@angular-devkit/core";
+import {BuildResult, runWebpack} from "@angular-devkit/build-webpack";
+import {from, Observable} from "rxjs";
+import {concatMap, map} from "rxjs/operators";
+import {getNodeWebpackConfig} from "./config/node.config";
+import {OUT_FILENAME} from "./config/config";
+import {normalizeBuildOptions} from "./config/normalize";
+import {NodeJsSyncHost} from "@angular-devkit/core/node";
+import {createProjectGraph} from "@nrwl/workspace/src/core/project-graph";
+import {createTmpTsConfig} from "@nrwl/workspace/src/utils/buildable-libs-utils";
+import {calculateProjectDependencies} from "./config/buildable-libs-utils";
 
 try {
   require("dotenv").config();
@@ -29,7 +29,7 @@ export default createBuilder(run);
 
 async function getSourceRoot(context: BuilderContext) {
   const workspaceHost = workspaces.createWorkspaceHost(new NodeJsSyncHost());
-  const { workspace } = await workspaces.readWorkspace(
+  const {workspace} = await workspaces.readWorkspace(
     context.workspaceRoot,
     workspaceHost
   );
@@ -46,7 +46,7 @@ async function getSourceRoot(context: BuilderContext) {
 function run(options: JsonObject & Options, context: BuilderContext): Observable<NodeBuildEvent> {
   if (!options.buildLibsFromSource) {
     const projGraph = createProjectGraph();
-    const { target, dependencies } = calculateProjectDependencies(
+    const {target, dependencies} = calculateProjectDependencies(
       projGraph,
       context
     );
@@ -103,6 +103,8 @@ class WorkspaceConfiguration {
   context: BuilderContext;
   packageJson: {
     main: string
+    name?: string
+    version?: string
     dependencies?: { [key: string]: string }
   } = {
     "main": "./main.js"
@@ -153,7 +155,7 @@ module.exports = {
           "enforceBuildableLibDependency": true,
           "allow": [],
           "depConstraints": [
-            { "sourceTag": "*", "onlyDependOnLibsWithTags": ["*"] }
+            {"sourceTag": "*", "onlyDependOnLibsWithTags": ["*"]}
           ]
         }
       ]
@@ -196,13 +198,26 @@ module.exports = {
     };
   }
 
+  getPackageJson(options = this.options, context = this.context) {
+    const exists = fileExists(options.packageJson);
+    return exists ? {data: readJsonFile(options.packageJson), exist: true} : {exist: false}
+  }
+
   createPackageJson(): void {
     const externalDependencies = this.getExternalDependencies();
+    const originalPackageJson = this.getPackageJson();
 
     if (externalDependencies.exist) {
       this.packageJson.dependencies = externalDependencies.dependencies;
     }
 
+    if (originalPackageJson.exist) {
+      const {name, version} = originalPackageJson.data;
+
+      this.packageJson.name = name || '';
+      this.packageJson.version = version || '';
+
+    }
   }
 
   addPackageJsonToDist(options = this.options, packageJson = this.packageJson): void {
@@ -239,7 +254,6 @@ module.exports = {
 
       }
     }
-
   }
 
   createEsLint(options = this.options, context = this.context) {

@@ -23,7 +23,9 @@
     "update": "nx migrate latest",
     "workspace-schematic": "nx workspace-schematic",
     "dep-graph": "nx dep-graph",
-    "help": "nx help"
+    "help": "nx help",
+    "create-e2e": "yarn nx e2e gcp-function-e2e && cd tmp/nx-e2e/proj/ && yarn add moment tslib @google-cloud/functions-framework supertest && yarn add -D @nrwl/lint",
+    "custom-build-app": "cd tmp/nx-e2e/proj/ && nx build my-app"
   },
   "private": true,
   "dependencies": {},

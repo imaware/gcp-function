@@ -1,9 +1,9 @@
 import Supertest from "supertest";
 const superTest = Supertest("http://localhost:8080");
 
-describe("<%= name %> e2d", () => {
+describe.skip("<%= name %> e2d", () => {
   it("return Hello World", async () => {
-    await supertest
+    await superTest
       .post("?value=JoelCode")
       .expect(200)
       .expect((response) => {

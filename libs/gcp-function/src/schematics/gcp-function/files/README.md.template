@@ -2,8 +2,16 @@
 
 This Google Cloud Function was generated with [Nx](https://nx.dev).
 
-
-* `gcloud functions <%= propertyName %> --update-env-vars {args.env}`
-* `gcloud functions deploy <%= propertyName %> --set-env-vars {args.env}`
-* `gcloud functions deploy <%= propertyName %> --service-account {args.email}`
-* `gcloud functions deploy <%= propertyName %> --max-instances {args.count}`
+## Commands
+* `nx generate generate @joelcode/gcp-function:http <cloud-function-name>`
+* `nx serve <cloud-function-name>`
+* `nx build <cloud-function-name>`
+* `nx logs <cloud-function-name>`
+* `nx deploy <cloud-function-name>`
+* `nx test <cloud-function-name>`
+* `nx lint <cloud-function-name>`
+* `gcloud functions deploy <%= propertyName %> --set-env-vars <foo=bar, zoo=lop>`
+* `gcloud functions <%= propertyName %> --update-env-vars <foo=bar, zoo=lop>`
+* `gcloud functions deploy <%= propertyName %> --service-account <email of service account>`
+* `gcloud functions deploy <%= propertyName %> --max-instances <count>`
+* `gcloud functions deploy <%= propertyName %> --clear-max-instances`

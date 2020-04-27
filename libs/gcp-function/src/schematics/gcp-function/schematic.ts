@@ -87,6 +87,17 @@ function getLogConfig(options: Options) {
   };
 }
 
+function getTestConfig(options: Options) {
+  return {
+    builder: "@nrwl/jest:jest",
+    options: {
+      jestConfig: join(options.appProjectRoot, "jest.config.js"),
+      tsConfig: join(options.appProjectRoot, "tsconfig.spec.json"),
+      passWithNoTests: true
+    }
+  }
+}
+
 function updateWorkspaceJson(options: Options): Rule {
   return updateWorkspaceInTree(workspaceJson => {
     const project = {
@@ -102,13 +113,13 @@ function updateWorkspaceJson(options: Options): Rule {
     project.architect.build = getBuildConfig(project, options);
     project.architect.logs = getLogConfig(options);
     project.architect.deploy = getDeployConfig(options);
-    // fixme: test don't show in architecture
+    project.architect.test = getTestConfig(options);
 
-    project.architect.test = externalSchematic("@nrwl/jest", "jest-project", {
-      project: options.name,
-      setupFile: "none",
-      skipSerializers: true
-    });
+    // project.architect.test = externalSchematic("@nrwl/jest", "jest-project", {
+    //   project: options.name,
+    //   setupFile: "none",
+    //   skipSerializers: true
+    // });
     project.architect.lint = generateProjectLint(
       normalize(project.root),
       join(normalize(project.root), "tsconfig.app.json"),

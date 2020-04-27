@@ -26,9 +26,9 @@ import {
   updateJsonInTree,
   updateWorkspaceInTree
 } from "@nrwl/workspace";
-import { inspect } from "util";
-import { Options, UserOptions } from "./schema";
-import { join, normalize } from "@angular-devkit/core";
+import {inspect} from "util";
+import {Options, UserOptions} from "./schema";
+import {join, normalize} from "@angular-devkit/core";
 
 
 function updateDependencies(options: Options): Rule {
@@ -39,7 +39,6 @@ function updateDependencies(options: Options): Rule {
   });
 }
 
-// fixme: create builder & update this function
 function getBuildConfig(project: any, options: Options) {
   return {
     builder: "@joelcode/gcp-function:build",
@@ -54,24 +53,31 @@ function getBuildConfig(project: any, options: Options) {
         optimization: true,
         extractLicenses: true,
         inspect: false
-        // fixme: good strategy for environment variables
-        // "fileReplacements": [
-        //   {
-        //     "replace": "apps/node-app/src/environments/environment.ts",
-        //     "with": "apps/node-app/src/environments/environment.prod.ts"
-        //   }
-        // ]
       }
     }
   };
 }
 
-// fixme: create configuration to serve functions & update this function
 function getServeConfig(options: Options) {
   return {
-    builder: "@nrwl/node:execute",
+    builder: "@nrwl/workspace:run-commands",
     options: {
-      buildTarget: `${options.name}:build`
+      commands: [
+        {command: `npx @google-cloud/functions-framework --target ${options.propertyName} --source ./dist/apps/${options.name}`}
+      ]
+    }
+  };
+}
+
+function getDeployConfig(options: Options) {
+  return {
+    builder: "@nrwl/workspace:run-commands",
+    options: {
+      commands: [
+        {
+          command: `gcloud functions deploy ${options.propertyName} ${options.trigger} --runtime ${options.runtime} --region ${options.region} --env-vars-file ./dist/apps/${options.name}/.production.yaml --source ./dist/apps/${options.name}`
+        }
+      ]
     }
   };
 }
@@ -88,7 +94,8 @@ function updateWorkspaceJson(options: Options): Rule {
     };
 
     project.architect.build = getBuildConfig(project, options);
-    // project.architect.serve = getServeConfig(options);
+    project.architect.serve = getServeConfig(options);
+    project.architect.deploy = getDeployConfig(options);
     // fixme: test don't show in architecture
     project.architect.test = externalSchematic("@nrwl/jest", "jest-project", {
       project: options.name,
@@ -115,7 +122,7 @@ function updateNxJson(options: Options): Rule {
       ...json,
       projects: {
         ...json.projects,
-        [options.name]: { tags: options.parsedTags }
+        [options.name]: {tags: options.parsedTags}
       }
     };
   });
@@ -141,7 +148,7 @@ function generateFiles(options: Options): Rule {
 }
 
 /* Utilities */
-export default function(UserOptions: UserOptions): Rule {
+export default function (UserOptions: UserOptions): Rule {
   const options = normalizeOptions(UserOptions);
 
   return (tree: Tree, context: SchematicContext) => {

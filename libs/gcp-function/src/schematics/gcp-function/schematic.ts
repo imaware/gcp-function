@@ -93,7 +93,7 @@ function getFormatConfig(options: Options) {
     options: {
       commands: [
         {
-          command: `nx format:write ${options.propertyName}`
+          command: `nx format:write ${options.name}`
         }
       ]
     }

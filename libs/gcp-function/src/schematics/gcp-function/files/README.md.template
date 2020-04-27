@@ -3,13 +3,14 @@
 This Google Cloud Function was generated with [Nx](https://nx.dev).
 
 ## Commands
-* `nx generate generate @joelcode/gcp-function:http <cloud-function-name>`
-* `nx serve <cloud-function-name>`
-* `nx build <cloud-function-name>`
-* `nx logs <cloud-function-name>`
-* `nx deploy <cloud-function-name>`
-* `nx test <cloud-function-name>`
-* `nx lint <cloud-function-name>`
+* `nx init <%= propertyName %>`
+* `nx test <%= propertyName %>`
+* `nx format <%= propertyName %>`
+* `nx lint <%= propertyName %>`
+* `nx serve <%= propertyName %>`
+* `nx build <%= propertyName %>`
+* `nx deploy <%= propertyName %>`
+* `nx logs <%= propertyName %>`
 * `gcloud functions deploy <%= propertyName %> --set-env-vars <foo=bar, zoo=lop>`
 * `gcloud functions <%= propertyName %> --update-env-vars <foo=bar, zoo=lop>`
 * `gcloud functions deploy <%= propertyName %> --service-account <email of service account>`

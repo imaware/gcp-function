@@ -87,6 +87,44 @@ function getLogConfig(options: Options) {
   };
 }
 
+function getFormatConfig(options: Options) {
+  return {
+    builder: "@nrwl/workspace:run-commands",
+    options: {
+      commands: [
+        {
+          command: `nx format:write ${options.propertyName}`
+        }
+      ]
+    }
+  };
+}
+
+function getInitConfig(options: Options) {
+  return {
+    builder: "@nrwl/workspace:run-commands",
+    options: {
+      commands: [
+        {
+          command: "yarn add tslib"
+        },
+        {
+          command: "yarn add -D @google-cloud/functions-framework"
+        },
+        {
+          command: "yarn add -D supertest"
+        },
+        {
+          command: "yarn add -D @nrwl/lint"
+        },
+        {
+          command: "yarn add -D @nrwl/jest"
+        }
+      ]
+    }
+  }
+}
+
 function getTestConfig(options: Options) {
   return {
     builder: "@nrwl/jest:jest",
@@ -114,6 +152,8 @@ function updateWorkspaceJson(options: Options): Rule {
     project.architect.logs = getLogConfig(options);
     project.architect.deploy = getDeployConfig(options);
     project.architect.test = getTestConfig(options);
+    project.architect.format = getFormatConfig(options);
+    project.architect.init = getInitConfig(options);
 
     // project.architect.test = externalSchematic("@nrwl/jest", "jest-project", {
     //   project: options.name,

@@ -1,12 +1,10 @@
-import { Configuration, BannerPlugin } from "webpack";
+import {Configuration, BannerPlugin} from "webpack";
 import * as mergeWebpack from "webpack-merge";
 import * as nodeExternals from "webpack-node-externals";
 
-const { CleanWebpackPlugin } = require("clean-webpack-plugin");
-const GeneratePackageJsonPlugin = require("generate-package-json-webpack-plugin");
-
-import { Options } from "../schema";
-import { getBaseWebpackPartial } from "./config";
+const {CleanWebpackPlugin} = require("clean-webpack-plugin");
+import {Options} from "../schema";
+import {getBaseWebpackPartial} from "./config";
 
 function getNodePartial(options: Options) {
   const webpackConfig: Configuration = {
@@ -28,7 +26,7 @@ function getNodePartial(options: Options) {
     webpackConfig.externals = [nodeExternals()];
   } else if (Array.isArray(options.externalDependencies)) {
     webpackConfig.externals = [
-      function(context, request, callback: Function) {
+      function (context, request, callback: Function) {
         if (options.externalDependencies.includes(request)) {
           // not bundled
           return callback(null, "commonjs " + request);
@@ -39,27 +37,9 @@ function getNodePartial(options: Options) {
     ];
   }
 
-  const basePackageValues = {
-    "name": "my-nodejs-module",
-    "version": "1.0.0",
-    "main": "./index.js",
-    "scripts": {
-      "start": "node ./index.js"
-    },
-    "engines": {
-      "node": "<= 6.9.1"
-    }
-  };
-
-  console.log({
-    options,
-    externals: webpackConfig.externals,
-    externalDependencies: options.externalDependencies
-  });
   // add plugins
   webpackConfig.plugins = [
     new CleanWebpackPlugin(),
-    // new GeneratePackageJsonPlugin(basePackageValues, options.packageJson)
   ];
 
   return webpackConfig;

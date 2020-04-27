@@ -4,6 +4,9 @@ import { Linter } from "@nrwl/workspace";
 export interface UserOptions {
   name: string;
   prefix?: string;
+  trigger?: string;
+  runtime?: string;
+  region?: string;
   tags?: string;
   directory?: string;
   skipFormat: boolean;

@@ -1,4 +1,4 @@
-import {Options, UserOptions} from "../schematics/gcp-function/schema";
+import {Options, UserOptions} from "../schematics/gcp-function-http/schema";
 import {join, normalize} from "@angular-devkit/core";
 import {inspect} from "util";
 import {Rule} from "@angular-devkit/schematics";

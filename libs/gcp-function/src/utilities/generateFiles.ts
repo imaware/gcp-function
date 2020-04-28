@@ -1,5 +1,5 @@
 import {names, offsetFromRoot} from "@nrwl/workspace";
-import {Options} from "../schematics/gcp-function/schema";
+import {Options} from "../schematics/gcp-function-http/schema";
 import {
   apply,
   applyTemplates,

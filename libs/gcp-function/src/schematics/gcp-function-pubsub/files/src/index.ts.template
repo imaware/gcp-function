@@ -1,0 +1,4 @@
+export const <%= propertyName %> = async (event: any, context: any) => {
+  const payload = JSON.parse(Buffer.from(event.data, 'base64').toString());
+  return payload;
+};

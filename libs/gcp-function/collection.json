@@ -4,9 +4,14 @@
   "version": "0.0.1",
   "schematics": {
     "http": {
+      "schema": "./src/schematics/schema.json",
       "factory": "./src/schematics/gcp-function-http/schematic",
-      "schema": "./src/schematics/gcp-function-http/schema.json",
       "description": "Template for the creation of Google Cloud Functions with HTTP triggers"
+    },
+    "pubsub": {
+      "schema": "./src/schematics/schema.json",
+      "factory": "./src/schematics/gcp-function-pubsub/schematic",
+      "description": "Template for the creation of Google Cloud Functions with pubsub triggers"
     }
   }
 }

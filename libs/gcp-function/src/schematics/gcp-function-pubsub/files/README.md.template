@@ -1,0 +1,21 @@
+# <%= name %>
+
+This Google Cloud Function was generated with [Nx](https://nx.dev).
+
+## Commands
+* `nx init <%= name %>`
+* `nx test <%= name %>`
+* `nx lint <%= name %>`
+* `nx serve <%= name %>`
+* `nx build <%= name %>`
+* `nx deploy <%= name %>`
+* `nx logs <%= name %>`
+* `nx format:write  <%= name %>`
+* `nx format:check  <%= name %>`
+* `nx affected --target=build`
+* `nx build <%= propertyName %> --with-deps`
+* `gcloud functions deploy <%= propertyName %> --set-env-vars <foo=bar, zoo=lop>`
+* `gcloud functions <%= propertyName %> --update-env-vars <foo=bar, zoo=lop>`
+* `gcloud functions deploy <%= propertyName %> --service-account <email of service account>`
+* `gcloud functions deploy <%= propertyName %> --max-instances <count>`
+* `gcloud functions deploy <%= propertyName %> --clear-max-instances`

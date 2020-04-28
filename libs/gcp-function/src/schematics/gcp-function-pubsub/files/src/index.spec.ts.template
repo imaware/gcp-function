@@ -1,0 +1,16 @@
+import { <%= propertyName %> } from "./index";
+function pubSubEvent(obj) {
+  return {
+    data: Buffer.from(JSON.stringify(obj)).toString('base64')
+  }
+}
+
+describe('<%= name %>', () => {
+  it('<%= name %>: should return {value: 'Hello World'}', async () => {
+    // Initialize mocks
+    // Call tested function and verify its behavior
+    const event = pubSubEvent({value: 'Hello World'});
+    const testResult = await pubsubService(event, null);
+    expect(testResult.value).toBe('Hello World');
+  });
+});

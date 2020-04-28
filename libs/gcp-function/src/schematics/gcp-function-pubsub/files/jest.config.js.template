@@ -1,0 +1,10 @@
+module.exports = {
+  name: '<%= name %>',
+  preset: '../../jest.config.js',
+  transform: {
+    '^.+\\.[tj]sx?$': 'ts-jest',
+  },
+  testMatch: ['**/+(*.)+(spec|test|e2e).+(ts|js|e2e)?(x)'],
+  moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx', 'html'],
+  coverageDirectory: '../../coverage/apps/demo-app',
+};

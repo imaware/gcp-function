@@ -15,10 +15,10 @@
     },
     "prefix": {
       "description": "Cloud Function trigger",
-      "default": "joelcode",
+      "default": "dev",
       "type": "string",
       "minLength": 1,
-      "x-prompt": "What trigger would you like to use?"
+      "x-prompt": "What function prefix would you like to you?"
     },
     "trigger": {
       "description": "Cloud Function trigger",
@@ -30,28 +30,29 @@
       "default": "",
       "type": "string",
       "minLength": 0,
-      "x-prompt": "What pubsup topic would you like to use? (default to function name)"
+      "x-prompt": "Which Pub/Sub topic should trigger your function? (default to function name)"
     },
     "runtime": {
       "description": "Cloud Function runtime",
       "default": "nodejs10",
       "type": "string",
       "minLength": 1,
-      "x-prompt": "What runtime would you like to use?"
+      "x-prompt": "Which runtime would you like to use?"
     },
     "maxInstances": {
       "description": "Maximum instance of cloud functions",
       "default": 10,
       "type": "number",
       "minLength": 1,
-      "x-prompt": "What is the maximum number of instance?"
+      "x-prompt": "What's the maximal quantity of instances?"
     },
     "region": {
       "description": "Cloud Function region",
+      "enum": ["us-central1", "us-east1", "us-east4","europe-west1", "europe-west2","asia-east2", "asia-northeast1","europe-west3"],
       "default": "us-central1",
       "type": "string",
       "minLength": 1,
-      "x-prompt": "What region would you like to use?"
+      "x-prompt": "Where should the function be hosted?"
     },
     "tags": {
       "type": "string",

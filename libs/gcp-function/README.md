@@ -43,7 +43,7 @@ It has first-class support for many frontend and backend technologies, so its do
 		npx create-nx-workspace@latest workspaceName
 		cd workspaceName
 		yarn add tslib
-		yarn add -D @joelcode/gcp-function @google-cloud/functions-framework supertest @nrwl/lint @nrwl/jest
+		yarn add -D @joelcode/gcp-function @google-cloud/functions-framework supertest @nrwl/lint @nrwl/jest @types/express
 		
     Read more about [Nx Workspace](https://nx.dev/angular)
     

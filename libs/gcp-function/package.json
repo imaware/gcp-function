@@ -12,6 +12,7 @@
     "moment": "^2.24.0",
     "tslib": "^1.11.1",
     "@nrwl/node": "*",
+    "@types/express": "*",
     "@google-cloud/functions-framework": "^1.5.1",
     "decimal.js": "^10.2.0",
     "@nrwl/jest": "*",

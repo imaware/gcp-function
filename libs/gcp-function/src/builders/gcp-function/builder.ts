@@ -148,6 +148,8 @@ module.exports = {
       "prettier/@typescript-eslint"
     ],
     "rules": {
+      "@typescript-eslint/no-explicit-any": "off",
+      "@typescript-eslint/no-unused-vars": "off",
       "@typescript-eslint/explicit-member-accessibility": "off",
       "@typescript-eslint/explicit-function-return-type": "off",
       "@typescript-eslint/no-parameter-properties": "off",
@@ -166,6 +168,7 @@ module.exports = {
       {
         "files": ["*.tsx"],
         "rules": {
+          "@typescript-eslint/no-explicit-any": "off",
           "@typescript-eslint/no-unused-vars": "off"
         }
       }

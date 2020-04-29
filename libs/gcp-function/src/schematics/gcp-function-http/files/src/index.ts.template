@@ -1,4 +1,4 @@
-export const <%= propertyName %> = async (req: any, res: any) => {
+export const <%= propertyName %> = async (req: any, res?: any) => {
   const value = req.query.value || 'Hello World';
   return res.send(value);
 };

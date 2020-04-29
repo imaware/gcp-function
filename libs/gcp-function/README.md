@@ -1,6 +1,5 @@
 # Google Cloud Functions Generator
-
-Generate a Google Cloud Function within an Nx workspace with dev tools: 
+Generate a Google Cloud Function within a Nx workspace with dev tools: 
 * Create : `nx generate @joelcode/gcp-function:http functionName`                       
 * Serve  : `nx serve functionName`                
 * Test   : `nx test functionName`      

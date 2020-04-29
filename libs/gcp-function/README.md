@@ -13,7 +13,6 @@ connecting cloud services. With Cloud Functions you write simple, single-purpose
 functions that are attached to events emitted from your cloud infrastructure and 
 services. Your function is triggered when an event being watched is fired.
 
-* [Documentation](https://cloud.google.com/functions/docs)
 * [Learn how to write a function from scratch.](https://cloud.google.com/functions/docs/first-nodejs)
 </details>
 
@@ -22,7 +21,7 @@ services. Your function is triggered when an event being watched is fired.
 Nx is a set of extensible dev tools for monorepo, which helps you develop like Google, Facebook, and Microsoft.
 It has first-class support for many frontend and backend technologies, so its documentation comes in multiple flavours.
 
-* [Documentation](https://nx.dev/angular/getting-started/why-nx)
+* [Learn Nx features in 10 minutes.](https://nx.dev/angular/getting-started/why-nx)
 </details>
 
 ## Setup
@@ -92,5 +91,3 @@ It has first-class support for many frontend and backend technologies, so its do
     gcloud functions deploy myFunction --max-instances maxInstancesCount
     gcloud functions deploy myFunction --clear-max-instances
     gcloud functions logs read functionName
-
-

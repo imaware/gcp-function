@@ -91,3 +91,8 @@ It has first-class support for many frontend and backend technologies, so its do
     gcloud functions deploy myFunction --max-instances maxInstancesCount
     gcloud functions deploy myFunction --clear-max-instances
     gcloud functions logs read functionName
+
+### Hire Me
+
+[Joel Turcotte Gaucher](https://www.linkedin.com/in/joel-turcotte-gaucher-ba057167/)
+joelturcotte.g@gmail.com

@@ -1,6 +1,7 @@
 {
   "name": "@joelcode/gcp-function",
   "version": "0.0.1",
+  "author": "Joel Turcotte Gaucher <joelturcotte.g@gmail.com>",
   "main": "src/index.js",
   "schematics": "./collection.json",
   "builders": "./builders.json",

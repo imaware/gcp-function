@@ -6,7 +6,7 @@ function pubSubEvent(obj) {
 }
 
 describe('<%= name %>', () => {
-  it('<%= name %>: should return {value: 'Hello World'}', async () => {
+  it('<%= name %>: should return {value: "Hello World"}', async () => {
     // Initialize mocks
     // Call tested function and verify its behavior
     const event = pubSubEvent({value: 'Hello World'});

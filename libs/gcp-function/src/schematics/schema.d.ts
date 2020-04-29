@@ -16,8 +16,8 @@ export interface UserOptions {
   linter?: Linter.EsLint;
   nxVersion?: string;
 }
-
 interface Options extends UserOptions {
+  triggerTopic? : string
   appProjectRoot: Path;
   dot: string;
   projectName: string;

@@ -92,11 +92,24 @@ export default class ProjectTools {
   }
 
   getDeployConfig(options = this.options) {
-    const commands = [
-      {
-        command: `gcloud functions deploy ${options.propertyName} ${options.trigger} --runtime ${options.runtime} --region ${options.region} --env-vars-file ./dist/apps/${options.name}/.production.yaml --source ./dist/apps/${options.name} --max-instances ${options.maxInstances} --allow-unauthenticated`
-      }
-    ]
+    const expr = this.options.trigger;
+    let commands = []
+    switch (expr) {
+      case '--trigger-http':
+        commands.push({
+          command: `gcloud functions deploy ${options.propertyName} ${options.trigger} --runtime ${options.runtime} --region ${options.region} --env-vars-file ./dist/apps/${options.name}/.production.yaml --source ./dist/apps/${options.name} --max-instances ${options.maxInstances} --allow-unauthenticated`
+        })
+        break;
+      case '--trigger-topic':
+        const topic = options.triggerTopic.length ? options.triggerTopic : options.propertyName;
+
+        commands.push({
+          command: `gcloud functions deploy ${options.propertyName} ${options.trigger} ${topic} --runtime ${options.runtime} --region ${options.region} --env-vars-file ./dist/apps/${options.name}/.production.yaml --source ./dist/apps/${options.name} --max-instances ${options.maxInstances} --allow-unauthenticated`
+        })
+        break;
+    }
+
+
     return this.createCommand(commands)
   }
 
@@ -171,7 +184,15 @@ export default class ProjectTools {
   }
 
   getProjectArchitect() {
-    this.project.architect.serve = this.getServeConfig();
+    const expr = this.options.trigger;
+    switch (expr) {
+      case '--trigger-http':
+        this.project.architect.serve = this.getServeConfig();
+        break;
+      case '--trigger-topic':
+        break;
+    }
+
     this.project.architect.build = this.getBuildConfig();
     this.project.architect.logs = this.getLogConfig();
     this.project.architect.deploy = this.getDeployConfig();

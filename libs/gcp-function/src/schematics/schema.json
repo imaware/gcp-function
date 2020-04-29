@@ -22,10 +22,18 @@
     },
     "trigger": {
       "description": "Cloud Function trigger",
-      "default": "--trigger-http",
+      "enum": ["--trigger-http", "--trigger-topic"],
+      "default": "--trigger-topic",
       "type": "string",
       "minLength": 1,
       "x-prompt": "What trigger would you like to use?"
+    },
+    "triggerTopic": {
+      "description": "Cloud Function trigger",
+      "default": "",
+      "type": "string",
+      "minLength": 1,
+      "x-prompt": "What pubsup topic would you like to use? (only for trigger --trigger-topic)"
     },
     "runtime": {
       "description": "Cloud Function runtime",

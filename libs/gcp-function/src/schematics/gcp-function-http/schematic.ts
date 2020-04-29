@@ -1,9 +1,9 @@
 import {chain, Rule, SchematicContext, Tree} from "@angular-devkit/schematics";
 import {addPackageWithInit, formatFiles} from "@nrwl/workspace";
 import {UserOptions} from "../schema";
-import ProjectTools from '../../utilities/projectTools'
-import generateFiles from '../../utilities/generateFiles'
-import updateNxJson from '../../utilities/updateNxJson'
+import ProjectTools from '../utilities/projectTools'
+import generateFiles from '../utilities/generateFiles'
+import updateNxJson from '../utilities/updateNxJson'
 
 // noinspection JSUnusedGlobalSymbols
 export default function (UserOptions: UserOptions): Rule {

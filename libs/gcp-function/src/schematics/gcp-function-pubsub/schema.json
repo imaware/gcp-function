@@ -22,11 +22,8 @@
     },
     "trigger": {
       "description": "Cloud Function trigger",
-      "enum": ["--trigger-http", "--trigger-topic"],
       "default": "--trigger-topic",
-      "type": "string",
-      "minLength": 1,
-      "x-prompt": "What trigger would you like to use?"
+      "type": "string"
     },
     "triggerTopic": {
       "description": "Cloud Function trigger",

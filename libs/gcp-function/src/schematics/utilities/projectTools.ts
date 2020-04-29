@@ -1,4 +1,4 @@
-import {Options, UserOptions} from "../schematics/schema";
+import {Options, UserOptions} from "../schema";
 import {join, normalize} from "@angular-devkit/core";
 import {inspect} from "util";
 import {Rule} from "@angular-devkit/schematics";
@@ -102,7 +102,6 @@ export default class ProjectTools {
         break;
       case '--trigger-topic':
         const topic = options.triggerTopic.length ? options.triggerTopic : options.propertyName;
-
         commands.push({
           command: `gcloud functions deploy ${options.propertyName} ${options.trigger} ${topic} --runtime ${options.runtime} --region ${options.region} --env-vars-file ./dist/apps/${options.name}/.production.yaml --source ./dist/apps/${options.name} --max-instances ${options.maxInstances} --allow-unauthenticated`
         })

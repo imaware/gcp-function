@@ -1,5 +1,5 @@
 import {names, offsetFromRoot} from "@nrwl/workspace";
-import {Options} from "../schematics/schema";
+import {Options} from "../schema";
 import {
   apply,
   applyTemplates,

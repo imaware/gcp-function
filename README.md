@@ -1,76 +1,96 @@
-# Joelcode
+# Google Cloud Functions Generator
 
-This project was generated using [Nx](https://nx.dev).
+Generate a Google Cloud Function within an Nx workspace with dev tools: 
+* Create : `nx generate @joelcode/gcp-function:http functionName`                       
+* Serve  : `nx serve functionName`                
+* Test   : `nx test functionName`      
+* Deploy : `nx deploy functionName`       
 
-<p align="center"><img src="https://raw.githubusercontent.com/nrwl/nx/master/nx-logo.png" width="450"></p>
+<details>
+<summary>What is a Google Cloud Functions?</summary>
+Cloud Functions is a serverless execution environment for building and 
+connecting cloud services. With Cloud Functions you write simple, single-purpose 
+functions that are attached to events emitted from your cloud infrastructure and 
+services. Your function is triggered when an event being watched is fired.
 
-🔎 **Nx is a set of Extensible Dev Tools for Monorepos.**
+* [Learn how to write a function from scratch.](https://cloud.google.com/functions/docs/first-nodejs)
+</details>
 
-## Adding capabilities to your workspace
+<details>
+<summary>What is NX?</summary>
+Nx is a set of extensible dev tools for monorepo, which helps you develop like Google, Facebook, and Microsoft.
+It has first-class support for many frontend and backend technologies, so its documentation comes in multiple flavours.
 
-Nx supports many plugins which add capabilities for developing different types of applications and different tools.
+* [Learn Nx features in 10 minutes.](https://nx.dev/angular/getting-started/why-nx)
+</details>
 
-These capabilities include generating applications, libraries, etc as well as the devtools to test, and build projects as well.
+## Setup
 
-Below are some plugins which you can add to your workspace:
+### Before you begin
+1. Install [Node.js version 10 or greater](https://nodejs.org/)
 
-- [React](https://reactjs.org)
-  - `npm install --save-dev @nrwl/react`
-- Web (no framework frontends)
-  - `npm install --save-dev @nrwl/web`
-- [Angular](https://angular.io)
-  - `npm install --save-dev @nrwl/angular`
-- [Nest](https://nestjs.com)
-  - `npm install --save-dev @nrwl/nest`
-- [Express](https://expressjs.com)
-  - `npm install --save-dev @nrwl/express`
-- [Node](https://nodejs.org)
-  - `npm install --save-dev @nrwl/node`
+1. Obtain authentication credentials.
+    Create local credentials by running the following command and following the
+    oauth2 flow (read more about the command [here](https://cloud.google.com/sdk/gcloud/reference/beta/auth/application-default/login)):
 
-## Generate an application
+        gcloud auth application-default login
 
-Run `nx g @nrwl/react:app my-app` to generate an application.
+    Read more about [Google Cloud Platform Authentication](https://cloud.google.com/docs/authentication#projects_and_resources).
 
-> You can use any of the plugins above to generate applications as well.
+1. Create a Nx workspace.
 
-When using Nx, you can create multiple applications and libraries in the same workspace.
+		npx create-nx-workspace@latest workspaceName
+		cd workspaceName
+		yarn add tslib
+		yarn add -D @joelcode/gcp-function @google-cloud/functions-framework supertest @nrwl/lint @nrwl/jest @types/express
+		
+    Read more about [Nx Workspace](https://nx.dev/angular)
+    
+## Create a function
+### Trigger: HTTP
+    nx generate @joelcode/gcp-function:http functionName
+### Trigger: Pub/Sub
+    nx generate @joelcode/gcp-function:pubsub functionName
+## Test the function
+    nx serve functionName
+    nx test functionName
 
-## Generate a library
+## Deploy the function
+    nx build functionName
+    nx deploy functionName
 
-Run `nx g @nrwl/react:lib my-lib` to generate a library.
+> The 'build' option bundle all your internal dependencies in main.js & create a new package.json with your external dependencies (version number from root/package.json.)
 
-> You can also use any of the plugins above to generate libraries as well.
+## Others
+### Reporting Errors to [Stackdriver Error Reporting](https://cloud.google.com/error-reporting/docs)
 
-Libraries are sharable across libraries and applications. They can be imported from `@joelcode/mylib`.
+    // These WILL be reported to Stackdriver Error Reporting
+    console.error(new Error('I failed you'));
+    console.error('I failed you', new Error('I failed you too'));
+    throw new Error('I failed you'); // Will cause a cold start if not caught
+    
+    // These will NOT be reported to Stackdriver Error Reporting
+    console.info(new Error('I failed you')); // Logging an Error object at the info level
+    console.error('I failed you'); // Logging something other than an Error object
+    throw 1; // Throwing something other than an Error object
+    callback('I failed you');
+    res.status(500).send('I failed you');
 
-## Development server
+### Nx Commands
+    nx lint functionName
+    nx format:write functionName
+    nx format:write  functionName
+    nx format:check  functionName
+    nx affected --target=build
+    nx build functionName --with-deps
 
-Run `nx serve my-app` for a dev server. Navigate to http://localhost:4200/. The app will automatically reload if you change any of the source files.
+### Google Cloud Commands
+    gcloud functions deploy myFunction --set-env-vars foo=bar, zoo=lop
+    gcloud functions myFunction --update-env-vars foo=bar, zoo=lop
+    gcloud functions deploy myFunction --service-account emailOfServiceAccount
+    gcloud functions deploy myFunction --max-instances maxInstancesCount
+    gcloud functions deploy myFunction --clear-max-instances
+    gcloud functions logs read functionName
 
-## Code scaffolding
-
-Run `nx g @nrwl/react:component my-component --project=my-app` to generate a new component.
-
-## Build
-
-Run `nx build my-app` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `--prod` flag for a production build.
-
-## Running unit tests
-
-Run `nx test my-app` to execute the unit tests via [Jest](https://jestjs.io).
-
-Run `nx affected:test` to execute the unit tests affected by a change.
-
-## Running end-to-end tests
-
-Run `ng e2e my-app` to execute the end-to-end tests via [Cypress](https://www.cypress.io).
-
-Run `nx affected:e2e` to execute the end-to-end tests affected by a change.
-
-## Understand your workspace
-
-Run `nx dep-graph` to see a diagram of the dependencies of your projects.
-
-## Further help
-
-Visit the [Nx Documentation](https://nx.dev) to learn more.
+### Hire Me
+Joel Turcotte Gaucher - [linkedin](https://www.linkedin.com/in/joel-turcotte-gaucher-ba057167/) - joelturcotte.g@gmail.com

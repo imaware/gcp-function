@@ -1,6 +1,6 @@
-# Google Cloud Function Generator
+# Google Cloud Functions Generator
 
-@joelcode/gcp-function plugin is a set of extensible dev tools for Google Cloud Function within an Nx workspace.
+Generate a Google Cloud Function within an Nx workspace with dev tools: 
 * Create : `nx generate @joelcode/gcp-function:http functionName`                       
 * Serve  : `nx serve functionName`                
 * Test   : `nx test functionName`      
@@ -93,5 +93,4 @@ It has first-class support for many frontend and backend technologies, so its do
     gcloud functions logs read functionName
 
 ### Hire Me
-[Joel Turcotte Gaucher](https://www.linkedin.com/in/joel-turcotte-gaucher-ba057167/)
-joelturcotte.g@gmail.com
+Joel Turcotte Gaucher - [linkedin](https://www.linkedin.com/in/joel-turcotte-gaucher-ba057167/) - joelturcotte.g@gmail.com

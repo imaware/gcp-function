@@ -8,13 +8,13 @@ import {JsonObject, workspaces} from "@angular-devkit/core";
 import {BuildResult, runWebpack} from "@angular-devkit/build-webpack";
 import {from, Observable} from "rxjs";
 import {concatMap, map} from "rxjs/operators";
-import {getNodeWebpackConfig} from "./config/node.config";
-import {OUT_FILENAME} from "./config/config";
-import {normalizeBuildOptions} from "./config/normalize";
+import {getNodeWebpackConfig} from "./utilities/node.config";
+import {OUT_FILENAME} from "./utilities/config";
+import {normalizeBuildOptions} from "./utilities/normalize";
 import {NodeJsSyncHost} from "@angular-devkit/core/node";
 import {createProjectGraph} from "@nrwl/workspace/src/core/project-graph";
 import {createTmpTsConfig} from "@nrwl/workspace/src/utils/buildable-libs-utils";
-import {calculateProjectDependencies} from "./config/buildable-libs-utils";
+import {calculateProjectDependencies} from "./utilities/buildable-libs-utils";
 
 try {
   require("dotenv").config();

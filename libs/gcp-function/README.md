@@ -93,6 +93,5 @@ It has first-class support for many frontend and backend technologies, so its do
     gcloud functions logs read functionName
 
 ### Hire Me
-
 [Joel Turcotte Gaucher](https://www.linkedin.com/in/joel-turcotte-gaucher-ba057167/)
 joelturcotte.g@gmail.com

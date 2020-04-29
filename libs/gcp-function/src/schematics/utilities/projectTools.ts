@@ -112,36 +112,6 @@ export default class ProjectTools {
     return this.createCommand(commands)
   }
 
-  getLogConfig(options = this.options) {
-    const commands = [
-      {
-        command: `gcloud functions logs read ${options.propertyName}`
-      }
-    ]
-    return this.createCommand(commands)
-  }
-
-  getInitConfig() {
-    const commands = [
-      {
-        command: "yarn add tslib"
-      },
-      {
-        command: "yarn add -D @google-cloud/functions-framework"
-      },
-      {
-        command: "yarn add -D supertest"
-      },
-      {
-        command: "yarn add -D @nrwl/lint"
-      },
-      {
-        command: "yarn add -D @nrwl/jest"
-      }
-    ]
-    return this.createCommand(commands)
-  }
-
   getTestConfig(options = this.options) {
     return {
       builder: "@nrwl/jest:jest",
@@ -193,10 +163,8 @@ export default class ProjectTools {
     }
 
     this.project.architect.build = this.getBuildConfig();
-    this.project.architect.logs = this.getLogConfig();
     this.project.architect.deploy = this.getDeployConfig();
     this.project.architect.test = this.getTestConfig();
-    this.project.architect.init = this.getInitConfig();
     this.project.architect.lint = this.getLintConfig();
     return this.project;
   }

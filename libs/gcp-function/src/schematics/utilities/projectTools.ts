@@ -161,11 +161,10 @@ export default class ProjectTools {
       case '--trigger-topic':
         break;
     }
-
+    this.project.architect.lint = this.getLintConfig();
+    this.project.architect.test = this.getTestConfig();
     this.project.architect.build = this.getBuildConfig();
     this.project.architect.deploy = this.getDeployConfig();
-    this.project.architect.test = this.getTestConfig();
-    this.project.architect.lint = this.getLintConfig();
     return this.project;
   }
 

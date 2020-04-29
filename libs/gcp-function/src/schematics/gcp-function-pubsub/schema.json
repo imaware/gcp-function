@@ -29,8 +29,8 @@
       "description": "Cloud Function trigger",
       "default": "",
       "type": "string",
-      "minLength": 1,
-      "x-prompt": "What pubsup topic would you like to use? (only for trigger --trigger-topic)"
+      "minLength": 0,
+      "x-prompt": "What pubsup topic would you like to use? (default to function name)"
     },
     "runtime": {
       "description": "Cloud Function runtime",

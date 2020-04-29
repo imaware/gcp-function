@@ -38,12 +38,12 @@ It has first-class support for many frontend and backend technologies, so its do
 
     Read more about [Google Cloud Platform Authentication](https://cloud.google.com/docs/authentication#projects_and_resources).
 
-1. Create an Nx workspace.
+1. Create a Nx workspace.
 
 		npx create-nx-workspace@latest workspaceName
 		cd workspaceName
 		yarn add tslib
-		yarn add -D @google-cloud/functions-framework supertest @nrwl/lint @nrwl/jest
+		yarn add -D @joelcode/gcp-function @google-cloud/functions-framework supertest @nrwl/lint @nrwl/jest
 		
     Read more about [Nx Workspace](https://nx.dev/angular)
     

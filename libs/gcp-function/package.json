@@ -1,6 +1,6 @@
 {
   "name": "@joelcode/gcp-function",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "author": "Joel Turcotte Gaucher <joelturcotte.g@gmail.com>",
   "repository": {
     "type" : "git",

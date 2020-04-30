@@ -2,8 +2,8 @@
 **Describe your awesome function here!**
 
 <div align="center">
-    <img src="https://github.com/JoelCode/gcp-function/blob/master/http-function-structure.png?raw=true" width="200">
-    <p>File Structure</p>
+  <img src="https://github.com/JoelCode/gcp-function/blob/master/http-function-structure.png?raw=true" width="300">
+  <p>HTTP Function Structure</p>
 </div>
 
 <details>

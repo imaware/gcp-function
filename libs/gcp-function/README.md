@@ -48,6 +48,12 @@ It has first-class support for many frontend and backend technologies, so its do
 ## Create a function
 ### Trigger: HTTP
     nx generate @joelcode/gcp-function:http functionName
+
+<div align="center">
+    <img src="https://github.com/JoelCode/gcp-function/blob/master/http-function-structure.png?raw=true" width="200">
+    <p>File Structure</p>
+</div>
+
 ### Trigger: Pub/Sub
     nx generate @joelcode/gcp-function:pubsub functionName
 ## Test the function

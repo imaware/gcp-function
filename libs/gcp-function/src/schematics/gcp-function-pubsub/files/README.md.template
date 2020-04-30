@@ -1,6 +1,11 @@
 # <%= name %> Pub/Sub Google Cloud Function
 **Describe your awesome function here!**
 
+<div align="center">
+    <img src="https://github.com/JoelCode/gcp-function/blob/master/http-function-structure.png?raw=true" width="200">
+    <p>File Structure</p>
+</div>
+
 <details>
 <summary>What is @joelcode/gcp-function plugin?</summary>
 @joelcode/gcp-function plugin is a set of extensible dev tools for Google Cloud Function within an Nx workspace.

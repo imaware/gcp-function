@@ -48,6 +48,12 @@ It has first-class support for many frontend and backend technologies, so its do
 ## Create a function
 ### Trigger: HTTP
     nx generate @joelcode/gcp-function:http functionName
+    
+<div align="center">
+<img src="https://github.com/JoelCode/gcp-function/blob/master/http-function-structure.png?raw=true" width="200">
+<p>HTTP Function Structure</p>
+</div>
+
 ### Trigger: Pub/Sub
     nx generate @joelcode/gcp-function:pubsub functionName
 ## Test the function
@@ -60,6 +66,16 @@ It has first-class support for many frontend and backend technologies, so its do
 
 > The 'build' option bundle all your internal dependencies in main.js & create a new package.json with your external dependencies (version number from root/package.json.)
 
+
+
+
+<div align="center">
+<img src="https://github.com/JoelCode/gcp-function/blob/master/nx-dev-flow.png?raw=true" width="600">
+<p>Add Microservice (Google Cloud Functions) to NX</p>
+</div>
+
+
+
 ## Others
 ### Reporting Errors to [Stackdriver Error Reporting](https://cloud.google.com/error-reporting/docs)
 
@@ -67,13 +83,6 @@ It has first-class support for many frontend and backend technologies, so its do
     console.error(new Error('I failed you'));
     console.error('I failed you', new Error('I failed you too'));
     throw new Error('I failed you'); // Will cause a cold start if not caught
-    
-    // These will NOT be reported to Stackdriver Error Reporting
-    console.info(new Error('I failed you')); // Logging an Error object at the info level
-    console.error('I failed you'); // Logging something other than an Error object
-    throw 1; // Throwing something other than an Error object
-    callback('I failed you');
-    res.status(500).send('I failed you');
 
 ### Nx Commands
     nx lint functionName

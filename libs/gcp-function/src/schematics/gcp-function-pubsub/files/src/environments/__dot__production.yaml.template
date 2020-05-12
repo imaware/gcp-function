@@ -1,1 +1,1 @@
-mySecret: 'Production secret'
+apiSecret: 'my-secret-key'

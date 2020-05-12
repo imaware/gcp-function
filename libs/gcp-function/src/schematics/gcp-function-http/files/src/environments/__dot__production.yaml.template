@@ -1,1 +1,3 @@
-mySecret: 'Production secret'
+apiSecret: 'my-secret-key'
+projectId: 'my-project-id'
+location: 'global'

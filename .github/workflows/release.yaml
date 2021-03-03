@@ -20,7 +20,7 @@ jobs:
       run: yarn install --frozen-lockfile
       working-directory: ./libs/gcp-function
     - id: prepare
-      run: yarn prepare
+      run: yarn release:prepare
       working-directory: ./libs/gcp-function
     - id: semantic-release
       run: yarn semantic-release

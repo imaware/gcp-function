@@ -51,6 +51,7 @@
     "webpack-node-externals": "1.7.2"
   },
   "devDependencies": {
+    "semantic-release": "^17.4.0",
     "shx": "^0.3.3"
   }
 }

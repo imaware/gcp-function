@@ -16,9 +16,11 @@ jobs:
         scope: '@imaware'
     - id: install
       run: yarn install --frozen-lockfile
+    - id: install-libs
+      run: yarn install --frozen-lockfile
       working-directory: ./libs/gcp-function
     - id: semantic-release
-      run: yarn release --frozen-lockfile
+      run: yarn release
       working-directory: ./libs/gcp-function
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

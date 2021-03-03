@@ -21,6 +21,7 @@ import { copy, removeSync } from "fs-extra";
 import { Observable, Subscriber } from "rxjs";
 import { writeJsonFile } from "@nrwl/workspace/src/utils/fileutils";
 import { calculateProjectDependencies } from "./buildable-libs-utils";
+import { JsonArray, JsonObject } from "@angular-devkit/core";
 
 // fixme: clean the signature & output
 export class ProjectInfo {
@@ -167,8 +168,10 @@ export class ProjectInfo {
   async copyAssetFiles(options = this.options, context = this.context) {
     this.log("Start: Copy Assets Files");
     try {
-      
-      const promises = options.files.map(file => copy(file.input, file.output));
+      const files = options.files as JsonArray;
+      const promises = files.map((file: JsonObject) => {
+        copy(file.input, file.output)
+      });
       await Promise.all(promises);
       this.log("Done: Copy Assets Files");
       return this.ok();

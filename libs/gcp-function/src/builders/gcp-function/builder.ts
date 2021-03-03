@@ -1,4 +1,4 @@
-const fs = require("fs");
+import * as fs from "fs";
 import {writeToFile, fileExists, readJsonFile, writeJsonFile} from "@nrwl/workspace/src/utils/fileutils";
 import {join, resolve} from "path";
 
@@ -19,84 +19,12 @@ import {calculateProjectDependencies} from "./utilities/buildable-libs-utils";
 try {
   require("dotenv").config();
 } catch (e) {
+  console.error(e);
 }
 
 export type NodeBuildEvent = BuildResult & {
   outfile: string;
 };
-
-export default createBuilder(run);
-
-async function getSourceRoot(context: BuilderContext) {
-  const workspaceHost = workspaces.createWorkspaceHost(new NodeJsSyncHost());
-  const {workspace} = await workspaces.readWorkspace(
-    context.workspaceRoot,
-    workspaceHost
-  );
-  if (workspace.projects.get(context.target.project).sourceRoot) {
-    return workspace.projects.get(context.target.project).sourceRoot;
-  } else {
-    context.reportStatus("Error");
-    const message = `${context.target.project} does not have a sourceRoot. Please define one.`;
-    context.logger.error(message);
-    throw new Error(message);
-  }
-}
-
-function run(options: JsonObject & Options, context: BuilderContext): Observable<NodeBuildEvent> {
-  if (!options.buildLibsFromSource) {
-    const projGraph = createProjectGraph();
-    const {target, dependencies} = calculateProjectDependencies(
-      projGraph,
-      context
-    );
-    options.tsConfig = createTmpTsConfig(
-      options.tsConfig,
-      context.workspaceRoot,
-      target.data.root,
-      dependencies
-    );
-  }
-
-  return from(getSourceRoot(context))
-    .pipe(
-      map(sourceRoot => normalizeBuildOptions(options, context.workspaceRoot, sourceRoot)),
-      map(options => {
-        let config = getNodeWebpackConfig(options);
-        if (options.webpackConfig) {
-          config = require(options.webpackConfig)(config, {
-            options,
-            configuration: context.target.configuration
-          });
-        }
-        return config;
-      }),
-      concatMap(config => runWebpack(config, context, {
-        logging: stats => {
-          context.logger.info(stats.toString(config.stats));
-        },
-        webpackFactory: require("webpack")
-      })),
-      map((buildEvent: BuildResult) => {
-        const api = new WorkspaceConfiguration(options, context);
-        api.createPackageJson();
-        api.addPackageJsonToDist();
-        api.updateTsConfig();
-        api.updateJestConfig();
-        api.createEsLint();
-
-        return buildEvent;
-      }),
-      map((buildEvent: BuildResult) => {
-        buildEvent.outfile = resolve(
-          context.workspaceRoot,
-          options.outputPath,
-          OUT_FILENAME
-        );
-        return buildEvent as NodeBuildEvent;
-      })
-    );
-}
 
 class WorkspaceConfiguration {
   options: Options;
@@ -112,14 +40,24 @@ class WorkspaceConfiguration {
     private: true,
   };
   tsConfig: any = {
-    "lib": ["es2017"],
+    "rootDir": ".",
+    "charset": "utf8",
     "module": "commonjs",
-    "noImplicitReturns": true,
+    "target": "es2020",
+    "lib": ["es2020"],
+    "noImplicitAny": false,
+    "removeComments": true,
+    "strictNullChecks": true,
+    "noImplicitThis": true,
+    "alwaysStrict": true,
+    "preserveConstEnums": true,
     "sourceMap": true,
-    "target": "es2017",
-    "esModuleInterop": true // help with jest test
+    "esModuleInterop": false,
+    "noImplicitReturns": true,
+    "baseUrl": ".",
+    "paths": {}
   };
-  jestConfig: string = `
+  jestConfig = `
 module.exports = {
     testMatch: ['**/+(*.)+(spec|test).+(ts|js)?(x)'],
     transform: {
@@ -134,7 +72,7 @@ module.exports = {
     "root": true,
     "parser": "@typescript-eslint/parser",
     "parserOptions": {
-      "ecmaVersion": 2018,
+      "ecmaVersion": 2020,
       "sourceType": "module",
       "project": "./tsconfig.json"
     },
@@ -181,9 +119,9 @@ module.exports = {
   }
 
   getExternalDependencies(options = this.options, context = this.context) {
-    let dependencies = {};
+    const dependencies = {};
     const buildFile = fs.readFileSync(`${options.outputPath}/main.js`, "utf8");
-    let re2 = /"(.*)"/gm;
+    const re2 = /"(.*)"/gm;
     const externalDependencies = buildFile.match(/require\("(.*)"\)/gm);
 
     // Get the package version from the root
@@ -238,7 +176,7 @@ module.exports = {
         const original = readJsonFile(path);
 
         for (const prop in this.tsConfig) {
-          if (this.tsConfig.hasOwnProperty(prop)) {
+          if (this.tsConfig.hasOwnProperty(prop)) { // eslint-disable-line no-prototype-builtins
             original.compilerOptions[prop] = this.tsConfig[prop];
           }
         }
@@ -271,3 +209,77 @@ module.exports = {
     }
   }
 }
+
+
+async function getSourceRoot(context: BuilderContext) {
+  const workspaceHost = workspaces.createWorkspaceHost(new NodeJsSyncHost());
+  const {workspace} = await workspaces.readWorkspace(
+    context.workspaceRoot,
+    workspaceHost
+  );
+  if (workspace.projects.get(context.target.project).sourceRoot) {
+    return workspace.projects.get(context.target.project).sourceRoot;
+  } else {
+    context.reportStatus("Error");
+    const message = `${context.target.project} does not have a sourceRoot. Please define one.`;
+    context.logger.error(message);
+    throw new Error(message);
+  }
+}
+
+function run(options: JsonObject & Options, context: BuilderContext): Observable<NodeBuildEvent> {
+  if (!options.buildLibsFromSource) {
+    const projGraph = createProjectGraph();
+    const {target, dependencies} = calculateProjectDependencies(
+      projGraph,
+      context
+    );
+    options.tsConfig = createTmpTsConfig(
+      options.tsConfig,
+      context.workspaceRoot,
+      target.data.root,
+      dependencies
+    );
+  }
+
+  return from(getSourceRoot(context))
+    .pipe(
+      map(sourceRoot => normalizeBuildOptions(options, context.workspaceRoot, sourceRoot)),
+      map(options => {
+        let config = getNodeWebpackConfig(options);
+        if (options.webpackConfig) {
+          config = require(options.webpackConfig)(config, { // eslint-disable-line @typescript-eslint/no-var-requires
+            options,
+            configuration: context.target.configuration
+          });
+        }
+        return config;
+      }),
+      concatMap(config => runWebpack(config, context, {
+        logging: stats => {
+          context.logger.info(stats.toString(config.stats));
+        },
+        webpackFactory: require("webpack")
+      })),
+      map((buildEvent: BuildResult) => {
+        const api = new WorkspaceConfiguration(options, context);
+        api.createPackageJson();
+        api.addPackageJsonToDist();
+        api.updateTsConfig();
+        api.updateJestConfig();
+        api.createEsLint();
+
+        return buildEvent;
+      }),
+      map((buildEvent: BuildResult) => {
+        buildEvent.outfile = resolve(
+          context.workspaceRoot,
+          options.outputPath,
+          OUT_FILENAME
+        );
+        return buildEvent as NodeBuildEvent;
+      })
+    );
+}
+
+export default createBuilder(run);

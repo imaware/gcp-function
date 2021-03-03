@@ -30,7 +30,7 @@ export default class ProjectTools {
       projectType: "application",
       prefix: this.options.name,
       schematics: {},
-      architect: <any>{}
+      architect: {} as any
     };
     return this;
   }
@@ -93,7 +93,8 @@ export default class ProjectTools {
 
   getDeployConfig(options = this.options) {
     const expr = this.options.trigger;
-    let commands = []
+    const commands = []
+    let topic: string;
     switch (expr) {
       case '--trigger-http':
         commands.push({
@@ -101,7 +102,7 @@ export default class ProjectTools {
         })
         break;
       case '--trigger-topic':
-        const topic = options.triggerTopic.length ? options.triggerTopic : options.propertyName;
+        topic = options.triggerTopic.length ? options.triggerTopic : options.propertyName;
         commands.push({
           command: `gcloud functions deploy ${options.propertyName} ${options.trigger} ${topic} --runtime ${options.runtime} --region ${options.region} --env-vars-file ./dist/apps/${options.name}/.production.yaml --source ./dist/apps/${options.name} --max-instances ${options.maxInstances} --allow-unauthenticated`
         })
@@ -125,7 +126,7 @@ export default class ProjectTools {
 
   getBuildConfig(project = this.project, options = this.options) {
     return {
-      builder: "@joelcode/gcp-function:build",
+      builder: "@imaware/gcp-function:build",
       options: {
         outputPath: join(normalize("dist"), options.appProjectRoot),
         main: join(project.sourceRoot, "index.ts"),

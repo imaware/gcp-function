@@ -65,7 +65,7 @@
           "builder": "@nrwl/nx-plugin:e2e",
           "options": {
             "target": "gcp-function:build",
-            "npmPackageName": "@joelcode/gcp-function",
+            "npmPackageName": "@imaware/gcp-function",
             "pluginOutputPath": "dist/libs/gcp-function",
             "jestConfig": "apps/gcp-function-e2e/jest.config.js",
             "tsSpecConfig": "apps/gcp-function-e2e/tsconfig.spec.json"

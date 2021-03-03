@@ -8,28 +8,14 @@ export interface FileReplacement {
   with: string;
 }
 
-export function normalizeBuildOptions<T extends BuildBuilderOptions>(
-  options: T,
+function normalizeFileReplacements(
   root: string,
-  sourceRoot: string
-): T {
-  const outputPath = resolve(root, options.outputPath);
-  const projectSourceRoot = resolve(root, sourceRoot);
-  return {
-    ...options,
-    root: root,
-    sourceRoot: sourceRoot,
-    main: resolve(root, options.main),
-    outputPath: resolve(root, options.outputPath),
-    tsConfig: resolve(root, options.tsConfig),
-    yamlOutput: resolve(outputPath, '.production.yaml'),
-    packageJson: resolve(root, options.packageJson),
-    fileReplacements: normalizeFileReplacements(root, options.fileReplacements),
-    assets: normalizeAssets(options.assets, root, sourceRoot),
-    webpackConfig: options.webpackConfig
-      ? resolve(root, options.webpackConfig)
-      : options.webpackConfig
-  };
+  fileReplacements: FileReplacement[]
+): FileReplacement[] {
+  return fileReplacements.map(fileReplacement => ({
+    replace: resolve(root, fileReplacement.replace),
+    with: resolve(root, fileReplacement.with)
+  }));
 }
 
 function normalizeAssets(
@@ -79,12 +65,26 @@ function normalizeAssets(
   });
 }
 
-function normalizeFileReplacements(
+export function normalizeBuildOptions<T extends BuildBuilderOptions>(
+  options: T,
   root: string,
-  fileReplacements: FileReplacement[]
-): FileReplacement[] {
-  return fileReplacements.map(fileReplacement => ({
-    replace: resolve(root, fileReplacement.replace),
-    with: resolve(root, fileReplacement.with)
-  }));
+  sourceRoot: string
+): T {
+  const outputPath = resolve(root, options.outputPath);
+  const projectSourceRoot = resolve(root, sourceRoot);
+  return {
+    ...options,
+    root: root,
+    sourceRoot: sourceRoot,
+    main: resolve(root, options.main),
+    outputPath: resolve(root, options.outputPath),
+    tsConfig: resolve(root, options.tsConfig),
+    yamlOutput: resolve(outputPath, '.production.yaml'),
+    packageJson: resolve(root, options.packageJson),
+    fileReplacements: normalizeFileReplacements(root, options.fileReplacements),
+    assets: normalizeAssets(options.assets, root, sourceRoot),
+    webpackConfig: options.webpackConfig
+      ? resolve(root, options.webpackConfig)
+      : options.webpackConfig
+  };
 }

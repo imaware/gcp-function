@@ -1,4 +1,19 @@
-export const <%= propertyName %> = async (event: any, context?: any) => {
-  const payload = JSON.parse(Buffer.from(event.data, 'base64').toString());
-  return payload;
+import { PubsubMessage } from '@google-cloud/pubsub/build/src/publisher';
+import { EventFunction } from '@google-cloud/functions-framework/build/src/functions';
+import { google } from 'googleapis';
+
+/**
+* <%= propertyName %>
+*
+* @param {PubsubMessage} event - The event object.
+*/
+export const <%= propertyName %>: EventFunction = async (
+  event: PubsubMessage
+) => {
+  const auth = await google.auth.getClient({
+    scopes: ['https://www.googleapis.com/auth/cloud-platform'],
+  });
+  google.options({ auth });
+  console.info(event);
+  return;
 };

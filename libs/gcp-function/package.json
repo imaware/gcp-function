@@ -1,45 +1,56 @@
 {
-  "name": "@joelcode/gcp-function",
+  "name": "@imaware/gcp-function",
   "version": "0.0.4",
-  "author": "Joel Turcotte Gaucher <joelturcotte.g@gmail.com>",
+  "author": "Christopher Manzi <chris@imaware.com>",
+  "license": "MIT",
   "repository": {
-    "type" : "git",
-    "url" : "https://github.com/JoelCode/gcp-function"
+    "type": "git",
+    "url": "https://github.com/imaware/gcp-function"
   },
-  "homepage": "https://github.com/JoelCode/gcp-function",
+  "homepage": "https://github.com/imaware/gcp-function",
+  "prepare": "tsc --project ./tsconfig.lib.json",
   "main": "src/index.js",
+  "types": "src/index.d.ts",
   "schematics": "./collection.json",
   "builders": "./builders.json",
   "peerDependencies": {
     "@nrwl/workspace": "*"
   },
+  "scripts": {
+    "semantic-release": "semantic-release"
+  },
   "dependencies": {
-    "supertest": "^4.0.2",
-    "moment": "^2.24.0",
-    "tslib": "^1.11.1",
-    "@nrwl/node": "*",
-    "@types/express": "*",
-    "@google-cloud/functions-framework": "^1.5.1",
-    "decimal.js": "^10.2.0",
-    "@nrwl/jest": "*",
-    "@nrwl/linter": "*",
     "@angular-devkit/architect": "~0.901.0",
+    "@angular-devkit/build-webpack": "~0.901.0",
     "@angular-devkit/core": "~9.1.0",
     "@angular-devkit/schematics": "~9.1.0",
-    "@angular-devkit/build-webpack": "~0.901.0",
+    "@google-cloud/functions-framework": "^1.5.1",
+    "@google-cloud/pubsub": "^2.10.0",
+    "@nrwl/jest": "*",
+    "@nrwl/linter": "*",
+    "@nrwl/node": "*",
+    "@types/express": "*",
     "circular-dependency-plugin": "5.2.0",
+    "clean-webpack-plugin": "^3.0.0",
     "copy-webpack-plugin": "5.1.1",
+    "decimal.js": "^10.2.0",
     "fork-ts-checker-webpack-plugin": "^3.1.1",
+    "generate-package-json-webpack-plugin": "^1.0.1",
+    "googleapis": "^67.1.1",
     "license-webpack-plugin": "2.1.2",
+    "moment": "^2.24.0",
     "source-map-support": "0.5.12",
+    "supertest": "^4.0.2",
     "tree-kill": "1.2.2",
     "ts-loader": "5.4.5",
     "tsconfig-paths-webpack-plugin": "3.2.0",
-    "clean-webpack-plugin": "^3.0.0",
-    "generate-package-json-webpack-plugin": "^1.0.1",
+    "tslib": "^1.11.1",
     "webpack": "4.42.0",
-    "webpack-merge": "4.2.1",
     "webpack-dev-server": "3.9.0",
+    "webpack-merge": "4.2.1",
     "webpack-node-externals": "1.7.2"
+  },
+  "devDependencies": {
+    "shx": "^0.3.3"
   }
 }

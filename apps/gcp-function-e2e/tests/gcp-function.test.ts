@@ -12,13 +12,13 @@ describe("gcp-function e2e", () => {
     const pluginPubsub = "pubsub-service";
     // const lib = "my-lib";
     // const lib2 = "my-lib2";
-    ensureNxProject("@joelcode/gcp-function", "dist/libs/gcp-function");
+    ensureNxProject("@imaware/gcp-function", "dist/libs/gcp-function");
 
     await Promise.all([
       // await runNxCommandAsync(`generate @nrwl/node:lib ${lib}  --buildable`),
       // await runNxCommandAsync(`generate @nrwl/node:lib ${lib2}  --buildable`),
-      await runNxCommandAsync(`generate @joelcode/gcp-function:http ${pluginHttp}`),
-      await runNxCommandAsync(`generate @joelcode/gcp-function:pubsub ${pluginPubsub}`)
+      await runNxCommandAsync(`generate @imaware/gcp-function:http ${pluginHttp}`),
+      await runNxCommandAsync(`generate @imaware/gcp-function:pubsub ${pluginPubsub}`)
     ]);
 
     await Promise.all([
@@ -41,9 +41,9 @@ describe("gcp-function e2e", () => {
   describe.skip("--tags", () => {
     it("should add tags to nx.json", async done => {
       const plugin = uniq("gcp-function");
-      ensureNxProject("@joelcode/gcp-function", "dist/libs/gcp-function");
+      ensureNxProject("@imaware/gcp-function", "dist/libs/gcp-function");
       await runNxCommandAsync(
-        `generate @joelcode/gcp-function:gcpFunction ${plugin} --tags e2etag,e2ePackage`
+        `generate @imaware/gcp-function:gcpFunction ${plugin} --tags e2etag,e2ePackage`
       );
       const nxJson = readJson("nx.json");
       expect(nxJson.projects[plugin].tags).toEqual(["e2etag", "e2ePackage"]);

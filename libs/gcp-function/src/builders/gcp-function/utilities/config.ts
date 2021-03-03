@@ -13,6 +13,39 @@ import { BuildBuilderOptions } from "../schema";
 
 export const OUT_FILENAME = "main.js";
 
+function getAliases(options: BuildBuilderOptions): { [key: string]: string } {
+  return options.fileReplacements.reduce(
+    (aliases, replacement) => ({
+      ...aliases,
+      [replacement.replace]: replacement.with
+    }),
+    {}
+  );
+}
+
+function getStatsConfig(options: BuildBuilderOptions): Stats.ToStringOptions {
+  return {
+    hash: true,
+    timings: false,
+    cached: false,
+    cachedAssets: false,
+    modules: false,
+    warnings: true,
+    errors: true,
+    colors: !options.verbose && !options.statsJson,
+    chunks: !options.verbose,
+    assets: !!options.verbose,
+    chunkOrigins: !!options.verbose,
+    chunkModules: !!options.verbose,
+    children: !!options.verbose,
+    reasons: !!options.verbose,
+    version: !!options.verbose,
+    errorDetails: !!options.verbose,
+    moduleTrace: !!options.verbose,
+    usedExports: !!options.verbose
+  };
+}
+
 export function getBaseWebpackPartial(
   options: BuildBuilderOptions
 ): Configuration {
@@ -125,7 +158,7 @@ export function getBaseWebpackPartial(
   if (options.showCircularDependencies) {
     extraPlugins.push(
       new CircularDependencyPlugin({
-        exclude: /[\\\/]node_modules[\\\/]/
+        exclude: /[\\/]node_modules[\\/]/
       })
     );
   }
@@ -133,37 +166,4 @@ export function getBaseWebpackPartial(
   webpackConfig.plugins = [...webpackConfig.plugins, ...extraPlugins];
 
   return webpackConfig;
-}
-
-function getAliases(options: BuildBuilderOptions): { [key: string]: string } {
-  return options.fileReplacements.reduce(
-    (aliases, replacement) => ({
-      ...aliases,
-      [replacement.replace]: replacement.with
-    }),
-    {}
-  );
-}
-
-function getStatsConfig(options: BuildBuilderOptions): Stats.ToStringOptions {
-  return {
-    hash: true,
-    timings: false,
-    cached: false,
-    cachedAssets: false,
-    modules: false,
-    warnings: true,
-    errors: true,
-    colors: !options.verbose && !options.statsJson,
-    chunks: !options.verbose,
-    assets: !!options.verbose,
-    chunkOrigins: !!options.verbose,
-    chunkModules: !!options.verbose,
-    children: !!options.verbose,
-    reasons: !!options.verbose,
-    version: !!options.verbose,
-    errorDetails: !!options.verbose,
-    moduleTrace: !!options.verbose,
-    usedExports: !!options.verbose
-  };
 }

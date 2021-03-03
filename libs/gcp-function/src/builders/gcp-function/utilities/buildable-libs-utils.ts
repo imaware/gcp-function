@@ -30,6 +30,69 @@ export type DependentBuildableProjectNode = {
   node: ProjectGraphNode;
 };
 
+function recursivelyCollectDependencies(
+  project: string,
+  projGraph: ProjectGraph,
+  acc: string[]
+) {
+  (projGraph.dependencies[project] || []).forEach(dependency => {
+    if (acc.indexOf(dependency.target) === -1) {
+      acc.push(dependency.target);
+      recursivelyCollectDependencies(dependency.target, projGraph, acc);
+    }
+  });
+  return acc;
+}
+
+function readPaths(tsConfig: string) {
+  try {
+    const parsedTSConfig = ts.readConfigFile(tsConfig, ts.sys.readFile).config;
+    if (
+      parsedTSConfig.compilerOptions &&
+      parsedTSConfig.compilerOptions.paths
+    ) {
+      return parsedTSConfig.compilerOptions.paths;
+    } else if (parsedTSConfig.extends) {
+      return readPaths(resolve(dirname(tsConfig), parsedTSConfig.extends));
+    } else {
+      return null;
+    }
+  } catch (e) {
+    return null;
+  }
+}
+
+// verify whether the package.json already specifies the dep
+function hasDependency(outputJson, depConfigName: string, packageName: string) {
+  if (outputJson[depConfigName]) {
+    return outputJson[depConfigName][packageName];
+  } else {
+    return false;
+  }
+}
+
+
+export function updatePaths(
+  dependencies: DependentBuildableProjectNode[],
+  paths: { [k: string]: string[] }
+) {
+  dependencies.forEach(dep => {
+    if (dep.outputs && dep.outputs.length > 0) {
+      paths[dep.name] = dep.outputs;
+    }
+  });
+}
+
+function cleanupTmpTsConfigFile(tmpTsConfigPath) {
+  try {
+    if (tmpTsConfigPath) {
+      unlinkSync(tmpTsConfigPath);
+    }
+  } catch (e) {
+    console.error(e);
+  }
+}
+
 export function calculateProjectDependencies(
   projGraph: ProjectGraph,
   context: BuilderContext
@@ -68,20 +131,6 @@ export function calculateProjectDependencies(
   return { target, dependencies };
 }
 
-function recursivelyCollectDependencies(
-  project: string,
-  projGraph: ProjectGraph,
-  acc: string[]
-) {
-  (projGraph.dependencies[project] || []).forEach(dependency => {
-    if (acc.indexOf(dependency.target) === -1) {
-      acc.push(dependency.target);
-      recursivelyCollectDependencies(dependency.target, projGraph, acc);
-    }
-  });
-  return acc;
-}
-
 export function readTsConfigWithRemappedPaths(
   tsConfig: string,
   dependencies: DependentBuildableProjectNode[]
@@ -91,24 +140,6 @@ export function readTsConfigWithRemappedPaths(
   parsedTSConfig.compilerOptions.paths = readPaths(tsConfig) || {};
   updatePaths(dependencies, parsedTSConfig.compilerOptions.paths);
   return parsedTSConfig;
-}
-
-function readPaths(tsConfig: string) {
-  try {
-    const parsedTSConfig = ts.readConfigFile(tsConfig, ts.sys.readFile).config;
-    if (
-      parsedTSConfig.compilerOptions &&
-      parsedTSConfig.compilerOptions.paths
-    ) {
-      return parsedTSConfig.compilerOptions.paths;
-    } else if (parsedTSConfig.extends) {
-      return readPaths(resolve(dirname(tsConfig), parsedTSConfig.extends));
-    } else {
-      return null;
-    }
-  } catch (e) {
-    return null;
-  }
 }
 
 export function createTmpTsConfig(
@@ -135,15 +166,6 @@ export function createTmpTsConfig(
   });
   writeJsonFile(tmpTsConfigPath, parsedTSConfig);
   return join(projectRoot, "tsconfig.nx-tmp");
-}
-
-function cleanupTmpTsConfigFile(tmpTsConfigPath) {
-  try {
-    if (tmpTsConfigPath) {
-      unlinkSync(tmpTsConfigPath);
-    }
-  } catch (e) {
-  }
 }
 
 export function checkDependentProjectsHaveBeenBuilt(
@@ -177,17 +199,6 @@ export function checkDependentProjectsHaveBeenBuilt(
   } else {
     return true;
   }
-}
-
-export function updatePaths(
-  dependencies: DependentBuildableProjectNode[],
-  paths: { [k: string]: string[] }
-) {
-  dependencies.forEach(dep => {
-    if (dep.outputs && dep.outputs.length > 0) {
-      paths[dep.name] = dep.outputs;
-    }
-  });
 }
 
 /**
@@ -246,14 +257,5 @@ export function updateBuildableProjectPackageJsonDependencies(
 
   if (updatePackageJson) {
     writeJsonFile(packageJsonPath, packageJson);
-  }
-}
-
-// verify whether the package.json already specifies the dep
-function hasDependency(outputJson, depConfigName: string, packageName: string) {
-  if (outputJson[depConfigName]) {
-    return outputJson[depConfigName][packageName];
-  } else {
-    return false;
   }
 }

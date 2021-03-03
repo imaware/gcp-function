@@ -1,10 +1,9 @@
 import {Configuration, BannerPlugin} from "webpack";
 import * as mergeWebpack from "webpack-merge";
 import * as nodeExternals from "webpack-node-externals";
+import * as CopyPlugin from 'copy-webpack-plugin';
+import {CleanWebpackPlugin} from 'clean-webpack-plugin';
 
-const CopyPlugin = require('copy-webpack-plugin');
-
-const {CleanWebpackPlugin} = require("clean-webpack-plugin");
 import {Options} from "../schema";
 import {getBaseWebpackPartial} from "./config";
 

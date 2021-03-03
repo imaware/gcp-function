@@ -64,7 +64,7 @@ export class ProjectInfo {
       const outDir = options.outputPath;
       const files: FileInputOutput[] = [];
 
-      const globbedFiles = (pattern: string, input: string = "", ignore: string[] = []) => {
+      const globbedFiles = (pattern: string, input = "", ignore: string[] = []) => {
         return glob.sync(pattern, {
           cwd: input,
           nodir: true,
@@ -74,11 +74,11 @@ export class ProjectInfo {
 
       options.assets.forEach(asset => {
         if (typeof asset === "string") {
-          // @ts-ignore
+          
           globbedFiles(asset, context.workspaceRoot)
-            // @ts-ignore
+            
             .forEach(globbedFile => {
-              // @ts-ignore
+              
               files.push({
                 input: join(context.workspaceRoot, globbedFile),
                 output: join(context.workspaceRoot, outDir, basename(globbedFile))
@@ -86,9 +86,9 @@ export class ProjectInfo {
             });
         } else {
           globbedFiles(asset.glob, join(context.workspaceRoot, asset.input), asset.ignore)
-            // @ts-ignore
+            
             .forEach(globbedFile => {
-              // @ts-ignore
+              
               files.push({
                 input: join(context.workspaceRoot, asset.input, globbedFile),
                 output: join(context.workspaceRoot, outDir, asset.output, globbedFile)
@@ -150,7 +150,7 @@ export class ProjectInfo {
     return this.dependenciesAreBuilt;
   }
 
-  reportAnError(message: string = "", error?: any) {
+  reportAnError(message = "", error?: any) {
     if (message) {
       this.log(message);
     }
@@ -167,7 +167,7 @@ export class ProjectInfo {
   async copyAssetFiles(options = this.options, context = this.context) {
     this.log("Start: Copy Assets Files");
     try {
-      // @ts-ignore
+      
       const promises = options.files.map(file => copy(file.input, file.output));
       await Promise.all(promises);
       this.log("Done: Copy Assets Files");
@@ -196,7 +196,7 @@ export class ProjectInfo {
       );
     }
 
-    let command = ["tsc", "-p", tsConfigPath, "--outDir", options.normalizedOutputPath];
+    const command = ["tsc", "-p", tsConfigPath, "--outDir", options.normalizedOutputPath];
     if (options.sourceMap) {
       command.push("--sourceMap");
     }
@@ -218,7 +218,7 @@ export class ProjectInfo {
     const mainFile = basename(options.main, ".ts");
     const typingsFile = `${mainFile}.d.ts`;
     const mainJsFile = `${mainFile}.js`;
-    let packageJson = readJsonFile(join(context.workspaceRoot, options.packageJson));
+    const packageJson = readJsonFile(join(context.workspaceRoot, options.packageJson));
     packageJson.main = normalize(`./${options.relativeMainFileOutput}/${mainJsFile}`);
     packageJson.typings = normalize(`./${options.relativeMainFileOutput}/${typingsFile}`);
 

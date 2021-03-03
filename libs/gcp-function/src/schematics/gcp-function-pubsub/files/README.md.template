@@ -2,14 +2,14 @@
 **Describe your awesome function here!**
 
 <div align="center">
-  <img src="https://github.com/JoelCode/gcp-function/blob/master/http-function-structure.png?raw=true" width="300">
+  <img src="https://github.com/imaware/gcp-function/blob/master/http-function-structure.png?raw=true" width="300">
   <p>HTTP Function Structure</p>
 </div>
 
 <details>
-<summary>What is @joelcode/gcp-function plugin?</summary>
-@joelcode/gcp-function plugin is a set of extensible dev tools for Google Cloud Function within an Nx workspace.
-* Create : `nx generate @joelcode/gcp-function:http functionName`
+<summary>What is @imaware/gcp-function plugin?</summary>
+@imaware/gcp-function plugin is a set of extensible dev tools for Google Cloud Function within an Nx workspace.
+* Create : `nx generate @imaware/gcp-function:http functionName`
 * Serve  : `nx serve functionName`
 * Test   : `nx test functionName`
 * Deploy : `nx deploy functionName`

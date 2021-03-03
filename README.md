@@ -1,6 +1,6 @@
 # Google Cloud Functions Generator
 Generate a Google Cloud Function within a Nx workspace with dev tools: 
-* Create : `nx generate @joelcode/gcp-function:http functionName`                       
+* Create : `nx generate @imaware/gcp-function:http functionName`                       
 * Serve  : `nx serve functionName`                
 * Test   : `nx test functionName`      
 * Deploy : `nx deploy functionName`       
@@ -41,21 +41,21 @@ It has first-class support for many frontend and backend technologies, so its do
 		npx create-nx-workspace@latest workspaceName
 		cd workspaceName
 		yarn add tslib
-		yarn add -D @joelcode/gcp-function @google-cloud/functions-framework supertest @nrwl/lint @nrwl/jest @types/express
+		yarn add -D @imaware/gcp-function @google-cloud/functions-framework supertest @nrwl/lint @nrwl/jest @types/express
 		
     Read more about [Nx Workspace](https://nx.dev/angular)
     
 ## Create a function
 
 <div align="center">
-<img src="https://github.com/JoelCode/gcp-function/blob/master/http-function-structure.png?raw=true" width="300">
+<img src="https://github.com/imaware/gcp-function/blob/master/http-function-structure.png?raw=true" width="300">
 <p>HTTP Function Structure</p>
 </div>
 
 ### Trigger: HTTP
-    nx generate @joelcode/gcp-function:http functionName
+    nx generate @imaware/gcp-function:http functionName
 ### Trigger: Pub/Sub
-    nx generate @joelcode/gcp-function:pubsub functionName
+    nx generate @imaware/gcp-function:pubsub functionName
 ## Test the function
     nx serve functionName
     nx test functionName
@@ -68,7 +68,7 @@ It has first-class support for many frontend and backend technologies, so its do
 
 ## App Composition
 <div align="center">
-<img src="https://github.com/JoelCode/gcp-function/blob/master/nx-dev-flow.png?raw=true" width="900">
+<img src="https://github.com/imaware/gcp-function/blob/master/nx-dev-flow.png?raw=true" width="900">
 <p>Add Microservice (Google Cloud Functions) to NX</p>
 </div>
 

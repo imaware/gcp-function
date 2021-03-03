@@ -1,5 +1,5 @@
 {
-  "npmScope": "joelcode",
+  "npmScope": "imaware",
   "implicitDependencies": {
     "workspace.json": "*",
     "package.json": {

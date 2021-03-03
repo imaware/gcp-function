@@ -4,11 +4,11 @@ const superTest = Supertest("http://localhost:8080");
 describe.skip("<%= name %> e2d", () => {
   it("return Hello World", async () => {
     await superTest
-      .post("?value=JoelCode")
+      .post("?value=imaware")
       .expect(200)
       .expect((response) => {
         // console.log(response.text);
-        expect(response.text).toBe("JoelCode");
+        expect(response.text).toBe("imaware");
       });
   });
 });

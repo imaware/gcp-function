@@ -18,7 +18,7 @@
   },
   "scripts": {
     "release:clean": "rimraf ../../dist",
-    "release:copy": "copyfiles builders.json collection.json ../../dist",
+    "release:copy": "copyfiles builders.json collection.json pakage.json README.md ../../dist",
     "release:build": "tsc --project ./tsconfig.lib.json",
     "prepare": "run-s release:clean release:build release:copy",
     "semantic-release": "semantic-release"

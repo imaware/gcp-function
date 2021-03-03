@@ -8,7 +8,6 @@
     "url": "https://github.com/imaware/gcp-function"
   },
   "homepage": "https://github.com/imaware/gcp-function",
-  "prepare": "yarn prepare",
   "main": "src/index.js",
   "types": "src/index.d.ts",
   "schematics": "./collection.json",
@@ -17,7 +16,6 @@
     "@nrwl/workspace": "*"
   },
   "scripts": {
-    "prepare": "yarn release:prepare",
     "release:clean": "rimraf dist",
     "release:copy": "copyfiles builders.json collection.json package.json README.md dist",
     "release:build": "tsc --project ./tsconfig.lib.json",
@@ -65,9 +63,6 @@
     "tsc": "^1.20150623.0",
     "typescript": "^4.2.2"
   },
-  "files": [
-    "dist/**"
-  ],
   "publishConfig": {
     "registry": "https://npm.pkg.github.com/@imaware"
   }

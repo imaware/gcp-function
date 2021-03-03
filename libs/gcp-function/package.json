@@ -53,5 +53,8 @@
   "devDependencies": {
     "semantic-release": "^17.4.0",
     "shx": "^0.3.3"
-  }
+  },
+  "files": [
+    "../../dist/**"
+  ]
 }

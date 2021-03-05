@@ -1,5 +1,5 @@
-import { JsonObject } from "@angular-devkit/core";
-import { Path } from "@angular-devkit/core";
+import { JsonObject } from '@angular-devkit/core';
+import { Path } from '@angular-devkit/core';
 
 export interface FileReplacement {
   replace: string;
@@ -23,7 +23,7 @@ export interface BuildBuilderOptions extends JsonObject {
   outputPath: string;
   yamlConfig: string;
   tsConfig: string;
-  packageJson: string
+  packageJson: string;
   watch?: boolean;
   setRootTsConfig?: boolean;
   setRootJestConfig?: boolean;
@@ -52,7 +52,7 @@ export interface BuildBuilderOptions extends JsonObject {
 export interface Options extends BuildBuilderOptions {
   optimization?: boolean;
   sourceMap?: boolean;
-  externalDependencies: "all" | "none" | string[];
+  externalDependencies: 'all' | 'none' | string[];
   buildLibsFromSource?: boolean;
 }
 

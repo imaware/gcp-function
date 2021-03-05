@@ -53,9 +53,17 @@
     "typescript": "~3.8.3"
   },
   "lint-staged": {
-    "**": [
-      "nx format:write",
-      "nx affected:lint --fix '--base=HEAD~1'"
+    "apps/**": [
+      "yarn affected:lint --fix --base=HEAD~1"
+    ],
+    "libs/**": [
+      "yarn affected:lint --fix --base=HEAD~1"
+    ],
+    "tools/**": [
+      "yarn affected:lint --fix --base=HEAD~1"
+    ],
+    "**.md": [
+      "yarn affected:lint --fix --base=HEAD~1"
     ]
   }
 }

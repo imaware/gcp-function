@@ -48,7 +48,7 @@
     "fork-ts-checker-webpack-plugin": "^3.1.1",
     "generate-package-json-webpack-plugin": "^1.0.1",
     "googleapis": "^67.1.1",
-    "license-webpack-plugin": "2.1.2", 
+    "license-webpack-plugin": "2.1.2",
     "moment": "^2.24.0",
     "source-map-support": "^0.5.19",
     "supertest": "^4.0.2",

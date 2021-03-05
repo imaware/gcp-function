@@ -1,7 +1,7 @@
-import {Path, normalize} from "@angular-devkit/core";
-import {resolve, dirname, relative, basename} from "path";
-import {BuildBuilderOptions} from "../schema";
-import {statSync} from "fs";
+import { Path, normalize } from '@angular-devkit/core';
+import { resolve, dirname, relative, basename } from 'path';
+import { BuildBuilderOptions } from '../schema';
+import { statSync } from 'fs';
 
 export interface FileReplacement {
   replace: string;
@@ -24,7 +24,7 @@ function normalizeAssets(
   sourceRoot: string
 ): any[] {
   return assets.map(asset => {
-    if (typeof asset === "string") {
+    if (typeof asset === 'string') {
       const assetPath = normalize(asset);
       const resolvedAssetPath = resolve(root, assetPath);
       const resolvedSourceRoot = resolve(root, sourceRoot);
@@ -40,16 +40,16 @@ function normalizeAssets(
         ? resolvedAssetPath
         : dirname(resolvedAssetPath);
       const output = relative(resolvedSourceRoot, resolve(root, input));
-      const glob = isDirectory ? "**/*" : basename(resolvedAssetPath);
+      const glob = isDirectory ? '**/*' : basename(resolvedAssetPath);
       return {
         input,
         output,
         glob
       };
     } else {
-      if (asset.output.startsWith("..")) {
+      if (asset.output.startsWith('..')) {
         throw new Error(
-          "An asset cannot be written to a location outside of the output path."
+          'An asset cannot be written to a location outside of the output path.'
         );
       }
 
@@ -59,7 +59,7 @@ function normalizeAssets(
         ...asset,
         input: resolvedAssetPath,
         // Now we remove starting slash to make Webpack place it from the output root.
-        output: asset.output.replace(/^\//, "")
+        output: asset.output.replace(/^\//, '')
       };
     }
   });

@@ -1,27 +1,27 @@
-import { BuilderContext, BuilderOutput } from "@angular-devkit/architect";
-import { Options, FileInputOutput } from "../schema";
-import { inspect } from "util";
-import { readJsonFile } from "@nrwl/workspace";
-import * as glob from "glob";
-import { basename, dirname, join, relative, normalize } from "path";
+import { BuilderContext, BuilderOutput } from '@angular-devkit/architect';
+import { Options, FileInputOutput } from '../schema';
+import { inspect } from 'util';
+import { readJsonFile } from '@nrwl/workspace';
+import * as glob from 'glob';
+import { basename, dirname, join, relative, normalize } from 'path';
 import {
   DependentBuildableProjectNode,
   checkDependentProjectsHaveBeenBuilt,
   createTmpTsConfig,
   updateBuildableProjectPackageJsonDependencies
-} from "@nrwl/workspace/src/utils/buildable-libs-utils";
+} from '@nrwl/workspace/src/utils/buildable-libs-utils';
 import {
   createProjectGraph,
   ProjectGraph,
   ProjectGraphNode
-} from "@nrwl/workspace/src/core/project-graph";
-import { ChildProcess, fork, spawn, exec } from "child_process";
-import * as treeKill from "tree-kill";
-import { copy, removeSync } from "fs-extra";
-import { Observable, Subscriber } from "rxjs";
-import { writeJsonFile } from "@nrwl/workspace/src/utils/fileutils";
-import { calculateProjectDependencies } from "./buildable-libs-utils";
-import { JsonArray, JsonObject } from "@angular-devkit/core";
+} from '@nrwl/workspace/src/core/project-graph';
+import { ChildProcess, fork, spawn, exec } from 'child_process';
+import * as treeKill from 'tree-kill';
+import { copy, removeSync } from 'fs-extra';
+import { Observable, Subscriber } from 'rxjs';
+import { writeJsonFile } from '@nrwl/workspace/src/utils/fileutils';
+import { calculateProjectDependencies } from './buildable-libs-utils';
+import { JsonArray, JsonObject } from '@angular-devkit/core';
 
 // fixme: clean the signature & output
 export class ProjectInfo {
@@ -61,11 +61,14 @@ export class ProjectInfo {
 
   getOptions(options, context): Options {
     if (this.options === undefined) {
-
       const outDir = options.outputPath;
       const files: FileInputOutput[] = [];
 
-      const globbedFiles = (pattern: string, input = "", ignore: string[] = []) => {
+      const globbedFiles = (
+        pattern: string,
+        input = '',
+        ignore: string[] = []
+      ) => {
         return glob.sync(pattern, {
           cwd: input,
           nodir: true,
@@ -74,36 +77,43 @@ export class ProjectInfo {
       };
 
       options.assets.forEach(asset => {
-        if (typeof asset === "string") {
-          
-          globbedFiles(asset, context.workspaceRoot)
-            
-            .forEach(globbedFile => {
-              
-              files.push({
-                input: join(context.workspaceRoot, globbedFile),
-                output: join(context.workspaceRoot, outDir, basename(globbedFile))
-              });
+        if (typeof asset === 'string') {
+          globbedFiles(asset, context.workspaceRoot).forEach(globbedFile => {
+            files.push({
+              input: join(context.workspaceRoot, globbedFile),
+              output: join(context.workspaceRoot, outDir, basename(globbedFile))
             });
+          });
         } else {
-          globbedFiles(asset.glob, join(context.workspaceRoot, asset.input), asset.ignore)
-            
-            .forEach(globbedFile => {
-              
-              files.push({
-                input: join(context.workspaceRoot, asset.input, globbedFile),
-                output: join(context.workspaceRoot, outDir, asset.output, globbedFile)
-              });
+          globbedFiles(
+            asset.glob,
+            join(context.workspaceRoot, asset.input),
+            asset.ignore
+          ).forEach(globbedFile => {
+            files.push({
+              input: join(context.workspaceRoot, asset.input, globbedFile),
+              output: join(
+                context.workspaceRoot,
+                outDir,
+                asset.output,
+                globbedFile
+              )
             });
+          });
         }
       });
 
       // Relative path for the dist directory
-      const tsconfig = readJsonFile(join(context.workspaceRoot, options.tsConfig));
-      const rootDir = tsconfig.compilerOptions.rootDir || "";
+      const tsconfig = readJsonFile(
+        join(context.workspaceRoot, options.tsConfig)
+      );
+      const rootDir = tsconfig.compilerOptions.rootDir || '';
       const mainFileDir = dirname(options.main);
       const tsconfigDir = dirname(options.tsConfig);
-      const relativeMainFileOutput = relative(`${tsconfigDir}/${rootDir}`, mainFileDir);
+      const relativeMainFileOutput = relative(
+        `${tsconfigDir}/${rootDir}`,
+        mainFileDir
+      );
       const watch = options.watch || false;
       const sourceMap = options.sourceMap || true;
 
@@ -128,30 +138,45 @@ export class ProjectInfo {
 
   getTarget(projectGraph = this.getProjectGraph(), context = this.context) {
     if (this.target === undefined) {
-      const { target, dependencies } = calculateProjectDependencies(projectGraph, context);
+      const { target, dependencies } = calculateProjectDependencies(
+        projectGraph,
+        context
+      );
       this.target = target;
       this.dependencies = dependencies;
     }
     return this.target;
   }
 
-  getDependencies(projectGraph = this.getProjectGraph(), context = this.context) {
+  getDependencies(
+    projectGraph = this.getProjectGraph(),
+    context = this.context
+  ) {
     if (this.dependencies === undefined) {
-      const { target, dependencies } = calculateProjectDependencies(projectGraph, context);
+      const { target, dependencies } = calculateProjectDependencies(
+        projectGraph,
+        context
+      );
       this.target = target;
       this.dependencies = dependencies;
     }
     return this.dependencies;
   }
 
-  getDependenciesAreBuilt(context = this.context, dependencies = this.getDependencies()) {
+  getDependenciesAreBuilt(
+    context = this.context,
+    dependencies = this.getDependencies()
+  ) {
     if (this.dependenciesAreBuilt === undefined) {
-      this.dependenciesAreBuilt = checkDependentProjectsHaveBeenBuilt(context, dependencies);
+      this.dependenciesAreBuilt = checkDependentProjectsHaveBeenBuilt(
+        context,
+        dependencies
+      );
     }
     return this.dependenciesAreBuilt;
   }
 
-  reportAnError(message = "", error?: any) {
+  reportAnError(message = '', error?: any) {
     if (message) {
       this.log(message);
     }
@@ -166,14 +191,14 @@ export class ProjectInfo {
   }
 
   async copyAssetFiles(options = this.options, context = this.context) {
-    this.log("Start: Copy Assets Files");
+    this.log('Start: Copy Assets Files');
     try {
       const files = options.files as JsonArray;
       const promises = files.map((file: JsonObject) => {
-        copy(file.input, file.output)
+        copy(file.input, file.output);
       });
       await Promise.all(promises);
-      this.log("Done: Copy Assets Files");
+      this.log('Done: Copy Assets Files');
       return this.ok();
     } catch (error) {
       return this.reportAnError(error.message, error);
@@ -186,7 +211,7 @@ export class ProjectInfo {
     projectGraph = this.getProjectGraph(),
     projectDependencies = this.getDependencies()
   ): Promise<BuilderOutput> {
-    this.log("Start: Compile Typescript Files");
+    this.log('Start: Compile Typescript Files');
 
     const libRoot = projectGraph.nodes[context.target.project].data.root;
     let tsConfigPath = join(context.workspaceRoot, options.tsConfig);
@@ -199,35 +224,53 @@ export class ProjectInfo {
       );
     }
 
-    const command = ["tsc", "-p", tsConfigPath, "--outDir", options.normalizedOutputPath];
+    const command = [
+      'tsc',
+      '-p',
+      tsConfigPath,
+      '--outDir',
+      options.normalizedOutputPath
+    ];
     if (options.sourceMap) {
-      command.push("--sourceMap");
+      command.push('--sourceMap');
     }
 
-    const tscPath = join(context.workspaceRoot, "/node_modules/typescript/bin/tsc");
+    const tscPath = join(
+      context.workspaceRoot,
+      '/node_modules/typescript/bin/tsc'
+    );
 
-    const child = exec(command.join(" "));
-    child.stdout.on("data", data => this.log(data.toString()));
-    child.stderr.on("data", data => this.log(data.toString()));
+    const child = exec(command.join(' '));
+    child.stdout.on('data', data => this.log(data.toString()));
+    child.stderr.on('data', data => this.log(data.toString()));
 
     return new Promise(resolve => {
-      this.log("Done: Compile Typescript Files");
-      child.on("close", code => resolve({ success: code === 0 }));
+      this.log('Done: Compile Typescript Files');
+      child.on('close', code => resolve({ success: code === 0 }));
     });
   }
 
-  updatePackageJson(options = this.options, context = this.context): Promise<BuilderOutput> {
-    this.log("Start: Update Package Json");
-    const mainFile = basename(options.main, ".ts");
+  updatePackageJson(
+    options = this.options,
+    context = this.context
+  ): Promise<BuilderOutput> {
+    this.log('Start: Update Package Json');
+    const mainFile = basename(options.main, '.ts');
     const typingsFile = `${mainFile}.d.ts`;
     const mainJsFile = `${mainFile}.js`;
-    const packageJson = readJsonFile(join(context.workspaceRoot, options.packageJson));
-    packageJson.main = normalize(`./${options.relativeMainFileOutput}/${mainJsFile}`);
-    packageJson.typings = normalize(`./${options.relativeMainFileOutput}/${typingsFile}`);
+    const packageJson = readJsonFile(
+      join(context.workspaceRoot, options.packageJson)
+    );
+    packageJson.main = normalize(
+      `./${options.relativeMainFileOutput}/${mainJsFile}`
+    );
+    packageJson.typings = normalize(
+      `./${options.relativeMainFileOutput}/${typingsFile}`
+    );
 
     return new Promise(resolve => {
       writeJsonFile(`${options.outputPath}/package.json`, packageJson);
-      this.log("Done: Update Package Json");
+      this.log('Done: Update Package Json');
       return this.ok();
     });
   }
@@ -244,10 +287,13 @@ export class ProjectInfo {
     target = this.getTarget(),
     dependencies = this.getDependencies()
   ): Promise<BuilderOutput> {
-    updateBuildableProjectPackageJsonDependencies(context, target, dependencies);
+    updateBuildableProjectPackageJsonDependencies(
+      context,
+      target,
+      dependencies
+    );
 
     // fixme: redo everywhere
     return Promise.resolve(this.ok());
   }
-
 }

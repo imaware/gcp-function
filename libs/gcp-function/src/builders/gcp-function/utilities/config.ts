@@ -1,17 +1,17 @@
-import * as webpack from "webpack";
-import { Configuration, ProgressPlugin, Stats } from "webpack";
+import * as webpack from 'webpack';
+import { Configuration, ProgressPlugin, Stats } from 'webpack';
 
-import * as ts from "typescript";
+import * as ts from 'typescript';
 
-import { LicenseWebpackPlugin } from "license-webpack-plugin";
-import * as CircularDependencyPlugin from "circular-dependency-plugin";
-import * as ForkTsCheckerWebpackPlugin from "fork-ts-checker-webpack-plugin";
-import TsConfigPathsPlugin from "tsconfig-paths-webpack-plugin";
-import * as CopyWebpackPlugin from "copy-webpack-plugin";
-import { readTsConfig } from "@nrwl/workspace";
-import { BuildBuilderOptions } from "../schema";
+import { LicenseWebpackPlugin } from 'license-webpack-plugin';
+import * as CircularDependencyPlugin from 'circular-dependency-plugin';
+import * as ForkTsCheckerWebpackPlugin from 'fork-ts-checker-webpack-plugin';
+import TsConfigPathsPlugin from 'tsconfig-paths-webpack-plugin';
+import * as CopyWebpackPlugin from 'copy-webpack-plugin';
+import { readTsConfig } from '@nrwl/workspace';
+import { BuildBuilderOptions } from '../schema';
 
-export const OUT_FILENAME = "main.js";
+export const OUT_FILENAME = 'main.js';
 
 function getAliases(options: BuildBuilderOptions): { [key: string]: string } {
   return options.fileReplacements.reduce(
@@ -53,15 +53,15 @@ export function getBaseWebpackPartial(
   const supportsEs2015 =
     compilerOptions.target !== ts.ScriptTarget.ES3 &&
     compilerOptions.target !== ts.ScriptTarget.ES5;
-  const mainFields = [...(supportsEs2015 ? ["es2015"] : []), "module", "main"];
-  const extensions = [".ts", ".tsx", ".mjs", ".js", ".jsx"];
+  const mainFields = [...(supportsEs2015 ? ['es2015'] : []), 'module', 'main'];
+  const extensions = ['.ts', '.tsx', '.mjs', '.js', '.jsx'];
   // noinspection RegExpSingleCharAlternation
   const webpackConfig: Configuration = {
     entry: {
       main: [options.main]
     },
-    devtool: options.sourceMap ? "source-map" : false,
-    mode: options.optimization ? "production" : "development",
+    devtool: options.sourceMap ? 'source-map' : false,
+    mode: options.optimization ? 'production' : 'development',
     output: {
       path: options.outputPath,
       filename: OUT_FILENAME
@@ -120,13 +120,15 @@ export function getBaseWebpackPartial(
   }
 
   if (options.extractLicenses) {
-    extraPlugins.push((new LicenseWebpackPlugin({
-      stats: {
-        errors: false
-      },
-      perChunkOutput: false,
-      outputFilename: `3rdpartylicenses.txt`
-    }) as unknown) as webpack.Plugin);
+    extraPlugins.push(
+      (new LicenseWebpackPlugin({
+        stats: {
+          errors: false
+        },
+        perChunkOutput: false,
+        outputFilename: `3rdpartylicenses.txt`
+      }) as unknown) as webpack.Plugin
+    );
   }
 
   // process asset entries
@@ -145,7 +147,7 @@ export function getBaseWebpackPartial(
     });
 
     const copyWebpackPluginOptions = {
-      ignore: [".gitkeep", "**/.DS_Store", "**/Thumbs.db"]
+      ignore: ['.gitkeep', '**/.DS_Store', '**/Thumbs.db']
     };
 
     const copyWebpackPluginInstance = new CopyWebpackPlugin(

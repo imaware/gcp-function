@@ -1,8 +1,8 @@
-import { Architect } from "@angular-devkit/architect";
-import { TestingArchitectHost } from "@angular-devkit/architect/testing";
-import { schema } from "@angular-devkit/core";
-import { join } from "path";
-import { Options } from "./schema";
+import { Architect } from '@angular-devkit/architect';
+import { TestingArchitectHost } from '@angular-devkit/architect/testing';
+import { schema } from '@angular-devkit/core';
+import { join } from 'path';
+import { Options } from './schema';
 
 // const options: Options = {};
 

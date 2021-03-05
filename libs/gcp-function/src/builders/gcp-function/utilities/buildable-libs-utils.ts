@@ -2,25 +2,25 @@ import {
   ProjectGraph,
   ProjectGraphNode,
   ProjectType
-} from "@nrwl/workspace/src/core/project-graph";
+} from '@nrwl/workspace/src/core/project-graph';
 
-import { BuilderContext } from "@angular-devkit/architect";
-import { join, resolve, dirname } from "path";
+import { BuilderContext } from '@angular-devkit/architect';
+import { join, resolve, dirname } from 'path';
 import {
   fileExists,
   readJsonFile,
   writeJsonFile
-} from "@nrwl/workspace/src/utils/fileutils";
-import { stripIndents } from "@angular-devkit/core/src/utils/literals";
-import { getOutputsForTargetAndConfiguration } from "@nrwl/workspace/src/tasks-runner/utils";
-import * as ts from "typescript";
-import { unlinkSync } from "fs";
+} from '@nrwl/workspace/src/utils/fileutils';
+import { stripIndents } from '@angular-devkit/core/src/utils/literals';
+import { getOutputsForTargetAndConfiguration } from '@nrwl/workspace/src/tasks-runner/utils';
+import * as ts from 'typescript';
+import { unlinkSync } from 'fs';
 
 function isBuildable(target: string, node: ProjectGraphNode): boolean {
   return (
     node.data.architect &&
     node.data.architect[target] &&
-    node.data.architect[target].builder !== ""
+    node.data.architect[target].builder !== ''
   );
 }
 
@@ -71,7 +71,6 @@ function hasDependency(outputJson, depConfigName: string, packageName: string) {
   }
 }
 
-
 export function updatePaths(
   dependencies: DependentBuildableProjectNode[],
   paths: { [k: string]: string[] }
@@ -111,7 +110,7 @@ export function calculateProjectDependencies(
         isBuildable(context.target.target, depNode)
       ) {
         const libPackageJson = readJsonFile(
-          join(context.workspaceRoot, depNode.data.root, "package.json")
+          join(context.workspaceRoot, depNode.data.root, 'package.json')
         );
 
         return {
@@ -152,20 +151,20 @@ export function createTmpTsConfig(
     tsconfigPath,
     dependencies
   );
-  const tmpTsConfigPath = join(workspaceRoot, projectRoot, "tsconfig.nx-tmp");
-  process.on("exit", () => {
+  const tmpTsConfigPath = join(workspaceRoot, projectRoot, 'tsconfig.nx-tmp');
+  process.on('exit', () => {
     cleanupTmpTsConfigFile(tmpTsConfigPath);
   });
-  process.on("SIGTERM", () => {
+  process.on('SIGTERM', () => {
     cleanupTmpTsConfigFile(tmpTsConfigPath);
     process.exit(0);
   });
-  process.on("SIGINT", () => {
+  process.on('SIGINT', () => {
     cleanupTmpTsConfigFile(tmpTsConfigPath);
     process.exit(0);
   });
   writeJsonFile(tmpTsConfigPath, parsedTSConfig);
-  return join(projectRoot, "tsconfig.nx-tmp");
+  return join(projectRoot, 'tsconfig.nx-tmp');
 }
 
 export function checkDependentProjectsHaveBeenBuilt(
@@ -177,7 +176,7 @@ export function checkDependentProjectsHaveBeenBuilt(
   // verify whether all dependent libraries have been built
   projectDependencies.forEach(dep => {
     const paths = dep.outputs.map(p =>
-      join(context.workspaceRoot, p, "package.json")
+      join(context.workspaceRoot, p, 'package.json')
     );
 
     if (!paths.some(fileExists)) {
@@ -188,9 +187,9 @@ export function checkDependentProjectsHaveBeenBuilt(
   if (depLibsToBuildFirst.length > 0) {
     context.logger.error(stripIndents`
       Some of the project ${
-      context.target.project
-    }'s dependencies have not been built yet. Please build these libraries before:
-      ${depLibsToBuildFirst.map(x => ` - ${x.node.name}`).join("\n")}
+        context.target.project
+      }'s dependencies have not been built yet. Please build these libraries before:
+      ${depLibsToBuildFirst.map(x => ` - ${x.node.name}`).join('\n')}
 
       Try: nx run ${context.target.project}:${context.target.target} --with-deps
     `);
@@ -230,9 +229,9 @@ export function updateBuildableProjectPackageJsonDependencies(
   let updatePackageJson = false;
   dependencies.forEach(entry => {
     if (
-      !hasDependency(packageJson, "dependencies", entry.name) &&
-      !hasDependency(packageJson, "devDependencies", entry.name) &&
-      !hasDependency(packageJson, "peerDependencies", entry.name)
+      !hasDependency(packageJson, 'dependencies', entry.name) &&
+      !hasDependency(packageJson, 'devDependencies', entry.name) &&
+      !hasDependency(packageJson, 'peerDependencies', entry.name)
     ) {
       try {
         const outputs = getOutputsForTargetAndConfiguration(
@@ -243,7 +242,7 @@ export function updateBuildableProjectPackageJsonDependencies(
         const depPackageJsonPath = join(
           context.workspaceRoot,
           outputs[0],
-          "package.json"
+          'package.json'
         );
         const depPackageJson = readJsonFile(depPackageJsonPath);
 

@@ -95,16 +95,18 @@ export default class ProjectTools {
     const expr = this.options.trigger;
     const commands = []
     let topic: string;
+    const serviceAccount = options.serviceAccount ? `--service-account ${options.serviceAccount}` : '';
+    const vpcConnector = options.vpcConnector ? `--egress-settings=all --vpc-connector=${options.vpcConnector}` : '';
     switch (expr) {
       case '--trigger-http':
         commands.push({
-          command: `gcloud functions deploy ${options.propertyName} ${options.trigger} --runtime ${options.runtime} --region ${options.region} --env-vars-file ./dist/apps/${options.name}/.production.yaml --source ./dist/apps/${options.name} --max-instances ${options.maxInstances} --allow-unauthenticated`
+          command: `gcloud functions deploy ${options.propertyName} ${options.trigger} ${serviceAccount} --runtime ${options.runtime} --region ${options.region} ${vpcConnector} --env-vars-file ./dist/apps/${options.name}/.production.yaml --source ./dist/apps/${options.name} --max-instances ${options.maxInstances} --allow-unauthenticated`
         })
         break;
       case '--trigger-topic':
         topic = options.triggerTopic.length ? options.triggerTopic : options.propertyName;
         commands.push({
-          command: `gcloud functions deploy ${options.propertyName} ${options.trigger} ${topic} --runtime ${options.runtime} --region ${options.region} --env-vars-file ./dist/apps/${options.name}/.production.yaml --source ./dist/apps/${options.name} --max-instances ${options.maxInstances} --allow-unauthenticated`
+          command: `gcloud functions deploy ${options.propertyName} ${options.trigger} ${topic} ${serviceAccount} --runtime ${options.runtime} --region ${options.region} ${vpcConnector} --env-vars-file ./dist/apps/${options.name}/.production.yaml --source ./dist/apps/${options.name} --max-instances ${options.maxInstances}`
         })
         break;
     }

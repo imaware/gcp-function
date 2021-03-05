@@ -190,7 +190,7 @@ module.exports = {
 
   updateJestConfig(options = this.options, context = this.context) {
     if (options.setRootJestConfig) {
-      const path = join(context.workspaceRoot, "jest.config.json");
+      const path = join(context.workspaceRoot, "jest.config.js");
       const jestConfigExist = fileExists(path);
       if (jestConfigExist) {
         writeToFile(path, this.jestConfig);
@@ -201,7 +201,7 @@ module.exports = {
 
   createEsLint(options = this.options, context = this.context) {
     if (options.setRootEsLint) {
-      const path = join(context.workspaceRoot, ".eslintrc");
+      const path = join(context.workspaceRoot, ".eslintrc.json");
       const requireNewFile = !fileExists(path);
       if (requireNewFile) {
         writeJsonFile(path, this.globalEsLint);

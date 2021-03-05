@@ -15,6 +15,8 @@ export interface UserOptions {
   unitTestRunner?: "jest" | "none";
   linter?: Linter.EsLint;
   nxVersion?: string;
+  serviceAccount?: string;
+  vpcConnector?: string;
 }
 interface Options extends UserOptions {
   triggerTopic? : string

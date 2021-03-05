@@ -54,6 +54,20 @@
       "minLength": 1,
       "x-prompt": "Where should the function be hosted?"
     },
+    "serviceAccount": {
+      "description": "IAM Service Account for function.",
+      "default": "",
+      "type": "string",
+      "minLength": 1,
+      "x-prompt": "What service account should the function use?"
+    },
+    "vpcConnector": {
+      "description": "VPC connector for private networking.",
+      "default": "",
+      "type": "string",
+      "minLength": 1,
+      "x-prompt": "What VPC connector should the function use (full urn)?"
+    },
     "tags": {
       "type": "string",
       "description": "Add tags to the project (used for linting)",

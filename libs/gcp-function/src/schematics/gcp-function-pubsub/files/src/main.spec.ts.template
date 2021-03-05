@@ -12,8 +12,6 @@ describe('<%= name %>', () => {
     // Initialize mocks
     // Call tested function and verify its behavior
     const event = pubSubEvent({value: 'Hello World'});
-    const testResult = await pubsubService(event, null);
-    console.log(inspect(testResult, false, null));
-    expect(testResult.value).toBe('Hello World');
+    await <%= propertyName %>(event, null);
   });
 });

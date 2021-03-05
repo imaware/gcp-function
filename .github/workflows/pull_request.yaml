@@ -3,20 +3,20 @@ on:
   pull_request:
     branches: [master]
 jobs:
-  audit:
-    runs-on: ubuntu-latest
-    steps:
-      - id: checkout
-        uses: actions/checkout@v2.3.4
-      - id: npm-setup
-        uses: actions/setup-node@v2.1.5
-        with:
-          node-version: '12'
-      - id: audit
-        run: yarn audit --groups dependencies
-      - id: audit-libs
-        run: yarn audit --groups dependencies
-        working-directory: ./libs/gcp-function
+  #audit:
+  #  runs-on: ubuntu-latest
+  #  steps:
+  #    - id: checkout
+  #      uses: actions/checkout@v2.3.4
+  #    - id: npm-setup
+  #      uses: actions/setup-node@v2.1.5
+  #      with:
+  #        node-version: '12'
+  #    - id: audit
+  #      run: yarn audit --groups dependencies
+  #    - id: audit-libs
+  #      run: yarn audit --groups dependencies
+  #      working-directory: ./libs/gcp-function
   commitlint:
     runs-on: ubuntu-latest
     steps:
@@ -55,5 +55,5 @@ jobs:
         run: yarn nx affected:lint --base=origin/$GITHUB_BASE_REF
       - id: build
         run: yarn nx affected:build --base=origin/$GITHUB_BASE_REF --exclude "e2e"
-      - id: test
-        run: yarn nx affected:test --base=origin/$GITHUB_BASE_REF --passWithNoTests --exclude "e2e"
+      #- id: test
+      #  run: yarn nx affected:test --base=origin/$GITHUB_BASE_REF --passWithNoTests --exclude "e2e"

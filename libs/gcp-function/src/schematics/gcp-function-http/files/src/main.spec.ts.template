@@ -1,4 +1,4 @@
-import { <%= propertyName %> } from "./index";
+import { <%= propertyName %> } from "./main";
 import { inspect } from 'util';
 
 describe("<%= name %>", () => {

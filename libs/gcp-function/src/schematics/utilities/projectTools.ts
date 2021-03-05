@@ -1,7 +1,7 @@
-import {Options, UserOptions} from "../schema";
-import {join, normalize} from "@angular-devkit/core";
-import {inspect} from "util";
-import {Rule} from "@angular-devkit/schematics";
+import { Options, UserOptions } from '../schema';
+import { join, normalize } from '@angular-devkit/core';
+import { inspect } from 'util';
+import { Rule } from '@angular-devkit/schematics';
 import {
   generateProjectLint,
   Linter,
@@ -12,13 +12,13 @@ import {
   toFileName,
   toPropertyName,
   updateWorkspaceInTree
-} from "@nrwl/workspace";
+} from '@nrwl/workspace';
 
 export default class ProjectTools {
-  userOptions: UserOptions
-  options: Options
-  project: any
-  context: any
+  userOptions: UserOptions;
+  options: Options;
+  project: any;
+  context: any;
 
   constructor(userOptions, context) {
     this.context = context;
@@ -26,8 +26,8 @@ export default class ProjectTools {
     this.options = this.normalizeOptions(userOptions);
     this.project = {
       root: this.options.appProjectRoot,
-      sourceRoot: join(this.options.appProjectRoot, "src"),
-      projectType: "application",
+      sourceRoot: join(this.options.appProjectRoot, 'src'),
+      projectType: 'application',
       prefix: this.options.name,
       schematics: {},
       architect: {} as any
@@ -42,10 +42,10 @@ export default class ProjectTools {
     const projectDirectory = userOptions.directory
       ? `${toFileName(userOptions.directory)}/${name}`
       : name;
-    const projectName = projectDirectory.replace(new RegExp("/", "g"), "-");
+    const projectName = projectDirectory.replace(new RegExp('/', 'g'), '-');
     const projectRoot = `${projectRootDir(projectType)}/${projectDirectory}`;
     const parsedTags = userOptions.tags
-      ? userOptions.tags.split(",").map(s => s.trim())
+      ? userOptions.tags.split(',').map(s => s.trim())
       : [];
     const className = toClassName(userOptions.name);
     const propertyName = toPropertyName(userOptions.name);
@@ -54,9 +54,8 @@ export default class ProjectTools {
       ? `${toFileName(userOptions.directory)}/${toFileName(userOptions.name)}`
       : toFileName(userOptions.name);
 
-
-    const appProjectRoot = join(normalize("apps"), appDirectory);
-    const dot = ".";
+    const appProjectRoot = join(normalize('apps'), appDirectory);
+    const dot = '.';
 
     return {
       ...userOptions,
@@ -77,7 +76,7 @@ export default class ProjectTools {
 
   createCommand(commands: { command: string }[]) {
     return {
-      builder: "@nrwl/workspace:run-commands",
+      builder: '@nrwl/workspace:run-commands',
       options: {
         commands: commands
       }
@@ -86,73 +85,104 @@ export default class ProjectTools {
 
   getServeConfig(options = this.options) {
     const commands = [
-      {command: `npx @google-cloud/functions-framework --target ${options.propertyName} --source ./dist/apps/${options.name}`}
-    ]
-    return this.createCommand(commands)
+      {
+        command: `npx @google-cloud/functions-framework --target ${options.propertyName} --source ./dist/apps/${options.name}`
+      }
+    ];
+    return this.createCommand(commands);
   }
 
   getDeployConfig(options = this.options) {
     const expr = this.options.trigger;
-    const commands = []
+    const commands = [];
     let topic: string;
-    const serviceAccount = options.serviceAccount ? `--service-account ${options.serviceAccount}` : '';
-    const vpcConnector = options.vpcConnector ? `--egress-settings=all --vpc-connector=${options.vpcConnector}` : '';
+    const serviceAccount = options.serviceAccount
+      ? `--service-account ${options.serviceAccount}`
+      : '';
+    const vpcConnector = options.vpcConnector
+      ? `--egress-settings=all --vpc-connector=${options.vpcConnector}`
+      : '';
     switch (expr) {
       case '--trigger-http':
         commands.push({
-          command: `gcloud functions deploy ${options.propertyName} ${options.trigger} ${serviceAccount} --runtime ${options.runtime} --region ${options.region} ${vpcConnector} --env-vars-file ./dist/apps/${options.name}/.production.yaml --source ./dist/apps/${options.name} --max-instances ${options.maxInstances} --allow-unauthenticated`
-        })
+          command: `gcloud functions deploy ${options.projectName}-{args.environment} ${options.trigger} ${serviceAccount} --runtime ${options.runtime} --region ${options.region} ${vpcConnector} --env-vars-file ./dist/apps/${options.name}/.production.yaml --source ./dist/apps/${options.name} --max-instances ${options.maxInstances} --allow-unauthenticated`
+        });
         break;
       case '--trigger-topic':
-        topic = options.triggerTopic.length ? options.triggerTopic : options.propertyName;
+        topic = options.triggerTopic.length
+          ? options.triggerTopic
+          : options.projectName;
         commands.push({
-          command: `gcloud functions deploy ${options.propertyName} ${options.trigger} ${topic} ${serviceAccount} --runtime ${options.runtime} --region ${options.region} ${vpcConnector} --env-vars-file ./dist/apps/${options.name}/.production.yaml --source ./dist/apps/${options.name} --max-instances ${options.maxInstances}`
-        })
+          command: `gcloud functions deploy ${options.projectName}-{args.environment} ${options.trigger} ${topic} ${serviceAccount} --runtime ${options.runtime} --region ${options.region} ${vpcConnector} --env-vars-file ./dist/apps/${options.name}/.production.yaml --source ./dist/apps/${options.name} --max-instances ${options.maxInstances}`
+        });
         break;
     }
 
-
-    return this.createCommand(commands)
+    return this.createCommand(commands);
   }
 
   getTestConfig(options = this.options) {
     return {
-      builder: "@nrwl/jest:jest",
+      builder: '@nrwl/jest:jest',
+      outputs: [`coverage/apps/${options.projectName}`],
       options: {
-        jestConfig: join(options.appProjectRoot, "jest.config.js"),
-        tsConfig: join(options.appProjectRoot, "tsconfig.spec.json"),
-        passWithNoTests: true
+        jestConfig: join(options.appProjectRoot, 'jest.config.js'),
+        passWithNoTests: false
       }
-    }
+    };
   }
 
   getBuildConfig(project = this.project, options = this.options) {
     return {
-      builder: "@imaware/gcp-function:build",
+      builder: '@nrwl/workspace:run-commands',
       options: {
-        outputPath: join(normalize("dist"), options.appProjectRoot),
-        main: join(project.sourceRoot, "index.ts"),
-        yamlConfig: join(project.sourceRoot, "/environments/.production.yaml"),
-        tsConfig: join(options.appProjectRoot, "tsconfig.app.json"),
-        packageJson: join(options.appProjectRoot, "package.json"),
+        parallel: false,
+        outputs: ['{options.outputPath}'],
+        commands: [
+          {
+            command: `./node_modules/.bin/shx rm -rf dist/apps/${options.projectName}`
+          },
+          {
+            command: `./node_modules/.bin/tsc --project apps/${options.projectName}/tsconfig.app.json`
+          },
+          {
+            command: `./node_modules/.bin/shx cat package.json | jq 'del(.devDependencies)' | tee dist/apps/${options.projectName}/src/package.json`
+          },
+          {
+            command: `./node_modules/.bin/shx cp yarn.lock dist/apps/${options.projectName}/src/yarn.lock`
+          }
+        ],
+        outputPath: `dist/apps/${options.projectName}`
       },
       configurations: {
         production: {
           optimization: true,
           extractLicenses: true,
-          inspect: false
+          inspect: false,
+          fileReplacements: [
+            {
+              replace: `apps/${options.projectName}/src/environments/environment.ts`,
+              with: `apps/${options.projectName}/src/environments/environment.prod.ts`
+            }
+          ]
         }
       }
     };
   }
 
   getLintConfig(project = this.project) {
-    return generateProjectLint(
+    const conf = generateProjectLint(
       normalize(project.root),
-      join(normalize(project.root), "tsconfig.app.json"),
+      join(normalize(project.root), 'tsconfig.app.json'),
       Linter.EsLint
     );
-
+    return {
+      ...conf,
+      options: {
+        ...conf.options,
+        lintFilePatterns: [`apps/${this.options.projectName}/**/*.ts`]
+      }
+    };
   }
 
   getProjectArchitect() {
@@ -174,7 +204,8 @@ export default class ProjectTools {
   updateWorkspaceJson(options): Rule {
     return updateWorkspaceInTree(workspaceJson => {
       workspaceJson.projects[options.name] = this.getProjectArchitect();
-      workspaceJson.defaultProject = workspaceJson.defaultProject || options.name;
+      workspaceJson.defaultProject =
+        workspaceJson.defaultProject || options.name;
       return workspaceJson;
     });
   }

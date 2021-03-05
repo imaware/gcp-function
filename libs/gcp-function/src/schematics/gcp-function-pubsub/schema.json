@@ -48,7 +48,16 @@
     },
     "region": {
       "description": "Cloud Function region",
-      "enum": ["us-central1", "us-east1", "us-east4","europe-west1", "europe-west2","asia-east2", "asia-northeast1","europe-west3"],
+      "enum": [
+        "us-central1",
+        "us-east1",
+        "us-east4",
+        "europe-west1",
+        "europe-west2",
+        "asia-east2",
+        "asia-northeast1",
+        "europe-west3"
+      ],
       "default": "us-central1",
       "type": "string",
       "minLength": 1,
@@ -58,14 +67,12 @@
       "description": "IAM Service Account for function.",
       "default": "",
       "type": "string",
-      "minLength": 1,
       "x-prompt": "What service account should the function use?"
     },
     "vpcConnector": {
       "description": "VPC connector for private networking.",
       "default": "",
       "type": "string",
-      "minLength": 1,
       "x-prompt": "What VPC connector should the function use (full urn)?"
     },
     "tags": {

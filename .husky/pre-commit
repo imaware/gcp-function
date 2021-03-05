@@ -1,4 +1,4 @@
 #!/bin/sh
 . "$(dirname "$0")/_/husky.sh"
 
-yarn nx affected:lint --fix --base=HEAD~1
+yarn lint-staged

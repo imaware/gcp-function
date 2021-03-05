@@ -45,10 +45,17 @@
     "eslint-config-prettier": "6.0.0",
     "husky": "^5.1.3",
     "jest": "25.2.3",
+    "lint-staged": "^10.5.4",
     "prettier": "1.19.1",
     "ts-jest": "25.2.1",
     "ts-node": "~7.0.0",
     "tslint": "~6.0.0",
     "typescript": "~3.8.3"
+  },
+  "lint-staged": {
+    "**": [
+      "nx format:write",
+      "nx affected:lint --fix '--base=HEAD~1'"
+    ]
   }
 }

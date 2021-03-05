@@ -12,6 +12,6 @@ describe('<%= name %>', () => {
     // Initialize mocks
     // Call tested function and verify its behavior
     const event = pubSubEvent({value: 'Hello World'});
-    await <%= propertyName %>(event, null);
+    await <%= propertyName %>(event, {});
   });
 });

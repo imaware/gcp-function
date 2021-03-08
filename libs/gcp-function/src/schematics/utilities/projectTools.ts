@@ -135,21 +135,21 @@ export default class ProjectTools {
   getBuildConfig(project = this.project, options = this.options) {
     return {
       builder: '@nrwl/workspace:run-commands',
+      outputs: ['{options.outputPath}'],
       options: {
         parallel: false,
-        outputs: ['{options.outputPath}'],
         commands: [
           {
-            command: `./node_modules/.bin/shx rm -rf dist/apps/${options.projectName}`
+            command: `shx rm -rf dist/apps/${options.projectName}`
           },
           {
-            command: `./node_modules/.bin/tsc --project apps/${options.projectName}/tsconfig.app.json`
+            command: `tsc --project apps/${options.projectName}/tsconfig.app.json`
           },
           {
-            command: `./node_modules/.bin/shx cat package.json | jq 'del(.devDependencies)' | tee dist/apps/${options.projectName}/src/package.json`
+            command: `shx cat package.json | jq "del(.devDependencies)" | tee dist/apps/${options.projectName}/src/package.json`
           },
           {
-            command: `./node_modules/.bin/shx cp yarn.lock dist/apps/${options.projectName}/src/yarn.lock`
+            command: `shx cp yarn.lock dist/apps/${options.projectName}/src/yarn.lock`
           }
         ],
         outputPath: `dist/apps/${options.projectName}`

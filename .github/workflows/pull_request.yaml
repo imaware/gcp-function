@@ -51,7 +51,7 @@ jobs:
         run: yarn install --frozen-lockfile
         env:
           NODE_AUTH_TOKEN: ${{ secrets.PACKAGES_READ_ACCESS_TOKEN }}
-      - id: install
+      - id: install-libs
         run: yarn install --frozen-lockfile
         env:
           NODE_AUTH_TOKEN: ${{ secrets.PACKAGES_READ_ACCESS_TOKEN }}

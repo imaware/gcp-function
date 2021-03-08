@@ -51,6 +51,11 @@ jobs:
         run: yarn install --frozen-lockfile
         env:
           NODE_AUTH_TOKEN: ${{ secrets.PACKAGES_READ_ACCESS_TOKEN }}
+      - id: install
+        run: yarn install --frozen-lockfile
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.PACKAGES_READ_ACCESS_TOKEN }}
+        working-directory: ./libs/gcp-function
       - id: format
         run: yarn nx format:check --base=origin/$GITHUB_BASE_REF
       - id: lint

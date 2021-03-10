@@ -14,3 +14,6 @@ updates:
       interval: "daily"
     commit-message:
       prefix: "chore(deps): "
+    ignore:
+      # Ignore all nx-related packages (these must be updated with nx migrate)
+      - dependency-name: "@nrwl/*"

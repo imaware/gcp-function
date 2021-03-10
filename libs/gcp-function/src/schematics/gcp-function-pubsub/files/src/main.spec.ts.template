@@ -1,21 +1,6 @@
 import { <%= propertyName %> } from "./main";
-import { inspect } from 'util';
-import {google, healthcare_v1} from 'googleapis';
-import {
-  BaseExternalAccountClient,
-  Compute,
-  JWT,
-  UserRefreshClient,
-} from 'google-auth-library';
-import promiseRetry from 'promise-retry';
-import {v4 as uuidv4} from 'uuid';
-import * as each from 'jest-each';
+import {default as each} from 'jest-each';
 import { PubsubMessage } from '@google-cloud/pubsub/build/src/publisher';
-
-const randId = uuidv4().split('-')[0]; // Just get a shortened uuid
-const dataset = `projects/${process.env.GCP_PROJECT}/locations/${process.env.GCP_REGION}/datasets/${process.env.GCP_DATASET_ID}`;
-const fhirStoreId = `unittest-orders-${randId}`;
-const parent = `${dataset}/fhirStores/${fhirStoreId}`;
 
 function pubSubEvent(obj) {
   return {
@@ -29,9 +14,9 @@ interface ValidatorFunction {
 
 /** TEST PARAMETERS */
 const testParams = [
-  /** [
+  [
     {
-      data: 'projects/imaware-test/locations/us-central1/datasets/fake-data/fhirStores/fake-fhir-store/resources/Observation/005c7c7c-970c-403f-b5d3-75bf2722b450',
+      data: `projects/imaware-test/locations/us-central1/datasets/fake-data/fhirStores/fake-fhir-store/resources/Observation/005c7c7c-970c-403f-b5d3-75bf2722b450`,
       attributes: {
         resourceType: 'Observation',
         action: 'CreateResource'
@@ -40,74 +25,16 @@ const testParams = [
     async (message?: PubsubMessage): boolean => {
       return true;
     } as ValidatorFunction
-  ]*/
+  ]
 ] as Array<[PubsubMessage, ValidatorFunction]>
 /** TEST PARAMETERS */
 
 describe('<%= name %>', () => {
-  let googleAuthClient:
-    | BaseExternalAccountClient
-    | Compute
-    | JWT
-    | UserRefreshClient;
-  let healthcare: healthcare_v1.Healthcare;
-
-  before('setupApplication', async () => {
-    googleAuthClient = await google.auth.getClient({
-      scopes: ['https://www.googleapis.com/auth/cloud-platform'],
-    });
-    google.options({
-      auth: googleAuthClient,
-      headers: {'Content-Type': 'application/fhir+json'},
-    });
-    healthcare = google.healthcare('v1');
-    // Load in test data
-    try {
-      // Create temp FHIR store
-      await healthcare.projects.locations.datasets.fhirStores.create({
-        fhirStoreId,
-        parent: dataset,
-        resource: {
-          enableUpdateCreate: true,
-          version: 'R4',
-        },
-      } as healthcare_v1.Params$Resource$Projects$Locations$Datasets$Fhirstores$Create);
-      // // Verify store creation
-      await promiseRetry(
-        (
-          retry: (error: any) => never,
-        ): GaxiosPromise<healthcare_v1.Schema$FhirStore> => {
-          return healthcare.projects.locations.datasets.fhirStores
-            .get({
-              name: parent,
-            } as healthcare_v1.Params$Resource$Projects$Locations$Datasets$Fhirstores$Get)
-            .catch(retry);
-        },
-        {retries: 3, minTimeout: 2000},
-      );
-    } catch (e) {
-      logger.error('error loading test data', JSON.stringify(e.message));
-      throw e;
-    }
-  });
 
   // Run parameterized tests
-  each(testParams).it("given pubsub message: %p", (message, validator) => {
-    await <%= propertyName %>(message);
+  each(testParams).it("given pubsub message: %p", async (message, validator) => {
+    await <%= propertyName %>(message, {});
     await validator(message);
-  });
-
-  after(async () => {
-    // Delete test data
-    try {
-      // Delete temp FHIR store
-      await healthcare.projects.locations.datasets.fhirStores.delete({
-        name: parent,
-      } as healthcare_v1.Params$Resource$Projects$Locations$Datasets$Fhirstores$Delete);
-    } catch (e) {
-      logger.error('error deleting test data', e.message);
-      throw e;
-    }
   });
 
   it('<%= name %>: should return {value: "Hello World"}', async () => {

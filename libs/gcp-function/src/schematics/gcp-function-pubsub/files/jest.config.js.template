@@ -12,7 +12,7 @@ module.exports = {
   },
   moduleFileExtensions: ['ts', 'js', 'html'],
   setupFiles: [
-    'test/.env'
+    '<rootDir>/test/.env'
   ],
   coverageDirectory: '../../coverage/apps/<%= name %>'
 };

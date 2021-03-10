@@ -2,14 +2,8 @@ import { <%= propertyName %> } from "./main";
 import {default as each} from 'jest-each';
 import { PubsubMessage } from '@google-cloud/pubsub/build/src/publisher';
 
-function pubSubEvent(obj) {
-  return {
-    data: Buffer.from(JSON.stringify(obj)).toString('base64')
-  }
-}
-
 interface ValidatorFunction {
-  async (message?: PubsubMessage): boolean;
+  (message?: PubsubMessage): Promise<boolean>;
 }
 
 /** TEST PARAMETERS */
@@ -22,9 +16,11 @@ const testParams = [
         action: 'CreateResource'
       }
     } as PubsubMessage,
-    async (message?: PubsubMessage): boolean => {
+    (async (message?: PubsubMessage): Promise<boolean> => {
+      // Validation goes here
+      expect(true);
       return true;
-    } as ValidatorFunction
+    }) as ValidatorFunction
   ]
 ] as Array<[PubsubMessage, ValidatorFunction]>
 /** TEST PARAMETERS */
@@ -37,10 +33,4 @@ describe('<%= name %>', () => {
     await validator(message);
   });
 
-  it('<%= name %>: should return {value: "Hello World"}', async () => {
-    // Initialize mocks
-    // Call tested function and verify its behavior
-    const event = pubSubEvent({value: 'Hello World'});
-    await <%= propertyName %>(event, {});
-  });
 });

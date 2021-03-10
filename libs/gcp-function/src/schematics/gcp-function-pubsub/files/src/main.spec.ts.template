@@ -24,12 +24,23 @@ function pubSubEvent(obj) {
 }
 
 interface ValidatorFunction {
-  (message?: PubsubMessage): boolean;
+  async (message?: PubsubMessage): boolean;
 }
 
 /** TEST PARAMETERS */
 const testParams = [
-
+  /** [
+    {
+      data: 'projects/imaware-test/locations/us-central1/datasets/fake-data/fhirStores/fake-fhir-store/resources/Observation/005c7c7c-970c-403f-b5d3-75bf2722b450',
+      attributes: {
+        resourceType: 'Observation',
+        action: 'CreateResource'
+      }
+    } as PubsubMessage,
+    async (message?: PubsubMessage): boolean => {
+      return true;
+    } as ValidatorFunction
+  ]*/
 ] as Array<[PubsubMessage, ValidatorFunction]>
 /** TEST PARAMETERS */
 

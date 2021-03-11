@@ -1,17 +1,36 @@
 import { <%= propertyName %> } from "./main";
-import { inspect } from 'util';
+import {default as each} from 'jest-each';
+import { PubsubMessage } from '@google-cloud/pubsub/build/src/publisher';
 
-function pubSubEvent(obj) {
-  return {
-    data: Buffer.from(JSON.stringify(obj)).toString('base64')
-  }
+interface ValidatorFunction {
+  (message?: PubsubMessage): Promise<boolean>;
 }
 
+/** TEST PARAMETERS */
+const testParams = [
+  [
+    {
+      data: `projects/imaware-test/locations/us-central1/datasets/fake-data/fhirStores/fake-fhir-store/resources/Observation/005c7c7c-970c-403f-b5d3-75bf2722b450`,
+      attributes: {
+        resourceType: 'Observation',
+        action: 'CreateResource'
+      }
+    } as PubsubMessage,
+    (async (message?: PubsubMessage): Promise<boolean> => {
+      // Validation goes here
+      expect(true);
+      return true;
+    }) as ValidatorFunction
+  ]
+] as Array<[PubsubMessage, ValidatorFunction]>
+/** TEST PARAMETERS */
+
 describe('<%= name %>', () => {
-  it('<%= name %>: should return {value: "Hello World"}', async () => {
-    // Initialize mocks
-    // Call tested function and verify its behavior
-    const event = pubSubEvent({value: 'Hello World'});
-    await <%= propertyName %>(event, {});
+
+  // Run parameterized tests
+  each(testParams).it("given pubsub message: %p", async (message, validator) => {
+    await <%= propertyName %>(message, {});
+    await validator(message);
   });
+
 });

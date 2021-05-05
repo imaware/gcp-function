@@ -36,7 +36,7 @@
     "@nrwl/nx-plugin": "9.2.3",
     "@nrwl/workspace": "9.2.3",
     "@types/jest": "26.0.23",
-    "@types/node": "~15.0.1",
+    "@types/node": "~15.0.2",
     "@typescript-eslint/eslint-plugin": "2.34.0",
     "@typescript-eslint/parser": "2.34.0",
     "commitlint": "^12.1.1",

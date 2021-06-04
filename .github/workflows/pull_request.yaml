@@ -62,5 +62,5 @@ jobs:
         run: yarn nx affected:lint --base=origin/$GITHUB_BASE_REF
       - id: build
         run: yarn nx affected:build --base=origin/$GITHUB_BASE_REF --exclude "e2e"
-      #- id: test
-      #  run: yarn nx affected:test --base=origin/$GITHUB_BASE_REF --passWithNoTests --exclude "e2e"
+      - id: test
+        run: yarn nx affected:test --base=origin/$GITHUB_BASE_REF --passWithNoTests --exclude "e2e"

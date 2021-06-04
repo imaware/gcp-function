@@ -146,6 +146,9 @@ export default class ProjectTools {
             command: `tsc --project apps/${options.projectName}/tsconfig.app.json`
           },
           {
+            command: `shx mkdir -p dist/apps/${options.projectName}/src/environments/ && cp -r apps/${options.projectName}/src/environments/*.yaml dist/apps/${options.projectName}/src/environments/`
+          },
+          {
             command: `shx cat package.json | jq "del(.devDependencies)" | tee dist/apps/${options.projectName}/src/package.json`
           },
           {
@@ -166,6 +169,23 @@ export default class ProjectTools {
             }
           ]
         }
+      }
+    };
+  }
+
+  getPackageConfig(project = this.project, options = this.options) {
+    return {
+      executor: '@nrwl/workspace:run-commands',
+      outputs: ['{options.outputPath}'],
+      options: {
+        parallel: false,
+        commands: [
+          { command: `rimraf dist/pkg/${options.projectName}.zip` },
+          { command: 'shx mkdir -p dist/pkg/' },
+          {
+            command: `cd dist/apps/${options.projectName}/src && zip -r ../../../../dist/pkg/${options.projectName}.zip *`
+          }
+        ]
       }
     };
   }
@@ -198,6 +218,7 @@ export default class ProjectTools {
     this.project.architect.test = this.getTestConfig();
     this.project.architect.build = this.getBuildConfig();
     this.project.architect.deploy = this.getDeployConfig();
+    this.project.architect.package = this.getPackageConfig();
     return this.project;
   }
 

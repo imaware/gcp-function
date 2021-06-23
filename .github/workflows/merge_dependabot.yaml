@@ -1,0 +1,16 @@
+name: Auto-merge minor/patch
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "0 */12 * * *"
+
+jobs:
+  test:
+    name: Auto-merge minor and patch updates
+    runs-on: ubuntu-18.04
+    steps:
+      - uses: imaware/dependabot-pr-action@master
+        with:
+          token: ${{ secrets.BOT_TOKEN }}
+          merge-minor: true
+          merge-patch: true
